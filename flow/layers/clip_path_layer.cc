@@ -1,4 +1,4 @@
-// Copyright 2015 The Chromium Authors. All rights reserved.
+// Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -24,6 +24,9 @@ void ClipPathLayer::Preroll(PrerollContext* context, const SkMatrix& matrix) {
   if (child_paint_bounds.intersect(clip_path_.getBounds())) {
     set_paint_bounds(child_paint_bounds);
   }
+  auto bounds = clip_path_.getBounds();
+  context->size_hints->emplace_back(
+      SkISize::Make(ceil(bounds.width()), ceil(bounds.height())));
 }
 
 #if defined(OS_FUCHSIA)
@@ -50,14 +53,15 @@ void ClipPathLayer::Paint(PaintContext& context) const {
   TRACE_EVENT0("flutter", "ClipPathLayer::Paint");
   FML_DCHECK(needs_painting());
 
-  SkAutoCanvasRestore save(context.canvas, true);
-  context.canvas->clipPath(clip_path_, clip_behavior_ != Clip::hardEdge);
+  SkAutoCanvasRestore save(context.internal_nodes_canvas, true);
+  context.internal_nodes_canvas->clipPath(clip_path_,
+                                          clip_behavior_ != Clip::hardEdge);
   if (clip_behavior_ == Clip::antiAliasWithSaveLayer) {
-    context.canvas->saveLayer(paint_bounds(), nullptr);
+    context.internal_nodes_canvas->saveLayer(paint_bounds(), nullptr);
   }
   PaintChildren(context);
   if (clip_behavior_ == Clip::antiAliasWithSaveLayer) {
-    context.canvas->restore();
+    context.internal_nodes_canvas->restore();
   }
 }
 

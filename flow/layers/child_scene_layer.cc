@@ -1,4 +1,4 @@
-// Copyright 2016 The Chromium Authors. All rights reserved.
+// Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -12,6 +12,10 @@ ChildSceneLayer::~ChildSceneLayer() = default;
 
 void ChildSceneLayer::Preroll(PrerollContext* context, const SkMatrix& matrix) {
   set_needs_system_composite(true);
+  // We may not need to provide this size as a hint if this layer is drawn
+  // for us.
+  context->size_hints->emplace_back(
+      SkISize::Make(ceil(size_.width()), ceil(size_.height())));
 }
 
 void ChildSceneLayer::Paint(PaintContext& context) const {

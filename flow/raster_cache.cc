@@ -1,4 +1,4 @@
-// Copyright 2016 The Chromium Authors. All rights reserved.
+// Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -17,6 +17,16 @@
 #include "third_party/skia/include/core/SkSurface.h"
 
 namespace flow {
+
+RasterCacheResult::RasterCacheResult() {}
+
+RasterCacheResult::RasterCacheResult(const RasterCacheResult& other) = default;
+
+RasterCacheResult::~RasterCacheResult() = default;
+
+RasterCacheResult::RasterCacheResult(sk_sp<SkImage> image,
+                                     const SkRect& logical_rect)
+    : image_(std::move(image)), logical_rect_(logical_rect) {}
 
 void RasterCacheResult::draw(SkCanvas& canvas, const SkPaint* paint) const {
   SkAutoCanvasRestore auto_restore(&canvas, true);
@@ -156,7 +166,12 @@ void RasterCache::Prepare(PrerollContext* context,
     entry.image = Rasterize(context->gr_context, ctm, context->dst_color_space,
                             checkerboard_images_, layer->paint_bounds(),
                             [layer, context](SkCanvas* canvas) {
+                              SkISize canvas_size = canvas->getBaseLayerSize();
+                              SkNWayCanvas internal_nodes_canvas(
+                                  canvas_size.width(), canvas_size.height());
+                              internal_nodes_canvas.addCanvas(canvas);
                               Layer::PaintContext paintContext = {
+                                  (SkCanvas*)&internal_nodes_canvas,
                                   canvas,
                                   nullptr,
                                   context->frame_time,

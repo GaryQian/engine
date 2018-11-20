@@ -1,4 +1,4 @@
-// Copyright 2017 The Chromium Authors. All rights reserved.
+// Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -15,6 +15,8 @@ TextureLayer::~TextureLayer() = default;
 void TextureLayer::Preroll(PrerollContext* context, const SkMatrix& matrix) {
   set_paint_bounds(SkRect::MakeXYWH(offset_.x(), offset_.y(), size_.width(),
                                     size_.height()));
+  context->size_hints->emplace_back(
+      SkISize::Make(ceil(size_.width()), ceil(size_.height())));
 }
 
 void TextureLayer::Paint(PaintContext& context) const {
@@ -23,7 +25,7 @@ void TextureLayer::Paint(PaintContext& context) const {
   if (!texture) {
     return;
   }
-  texture->Paint(*context.canvas, paint_bounds(), freeze_);
+  texture->Paint(*context.leaf_nodes_canvas, paint_bounds(), freeze_);
 }
 
 }  // namespace flow

@@ -1,4 +1,4 @@
-// Copyright 2018 The Chromium Authors. All rights reserved.
+// Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -14,6 +14,15 @@ void PlatformViewLayer::Preroll(PrerollContext* context,
                                 const SkMatrix& matrix) {
   set_paint_bounds(SkRect::MakeXYWH(offset_.x(), offset_.y(), size_.width(),
                                     size_.height()));
+
+  if (context->view_embedder == nullptr) {
+    FML_LOG(ERROR) << "Trying to embed a platform view but the PrerollContext "
+                      "does not support embedding";
+    return;
+  }
+  context->view_embedder->PrerollCompositeEmbeddedView(view_id_);
+  context->size_hints->emplace_back(
+      SkISize::Make(ceil(size_.width()), ceil(size_.height())));
 }
 
 void PlatformViewLayer::Paint(PaintContext& context) const {
@@ -23,16 +32,13 @@ void PlatformViewLayer::Paint(PaintContext& context) const {
     return;
   }
   EmbeddedViewParams params;
-  SkMatrix transform = context.canvas->getTotalMatrix();
+  SkMatrix transform = context.leaf_nodes_canvas->getTotalMatrix();
   params.offsetPixels =
       SkPoint::Make(transform.getTranslateX(), transform.getTranslateY());
   params.sizePoints = size_;
-  params.canvasBaseLayerSize = context.canvas->getBaseLayerSize();
 
   SkCanvas* canvas =
       context.view_embedder->CompositeEmbeddedView(view_id_, params);
-  // TODO(amirh): copy the full canvas state here
-  canvas->concat(context.canvas->getTotalMatrix());
-  context.canvas = canvas;
+  context.leaf_nodes_canvas = canvas;
 }
 }  // namespace flow
