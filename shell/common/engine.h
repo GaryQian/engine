@@ -130,7 +130,7 @@ class Engine final : public blink::RuntimeDelegate {
   std::shared_ptr<blink::AssetManager> asset_manager_;
   bool activity_running_;
   bool have_surface_;
-  blink::FontCollection font_collection_;
+  std::unique_ptr<blink::FontCollection> font_collection_;
   fml::WeakPtrFactory<Engine> weak_factory_;
 
   // |blink::RuntimeDelegate|

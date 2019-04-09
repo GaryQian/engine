@@ -126,6 +126,9 @@ struct Settings {
   std::string assets_path;
   std::string flx_path;
 
+
+  bool enable_skia_shaping = true;
+
   std::string ToString() const;
 };
 

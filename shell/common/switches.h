@@ -93,6 +93,9 @@ DEF_SWITCH(SkiaDeterministicRendering,
 DEF_SWITCH(EnableBlink,
            "enable-blink",
            "Enable Blink as the text shaping library instead of libtxt.")
+DEF_SWITCH(EnableSkiaShaper,
+           "enable-skia-shaper",
+           "Enable Skia shaper as the text shaping library instead of libtxt.")
 DEF_SWITCH(FLX, "flx", "Specify the FLX path.")
 DEF_SWITCH(FlutterAssetsDir,
            "flutter-assets-dir",
