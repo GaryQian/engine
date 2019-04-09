@@ -2,8 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef FLUTTER_LIB_UI_TEXT_PARAGRAPH_IMPL_TXT_H_
-#define FLUTTER_LIB_UI_TEXT_PARAGRAPH_IMPL_TXT_H_
+#pragma once
 
 #include "flutter/lib/ui/painting/canvas.h"
 #include "flutter/lib/ui/text/paragraph_impl.h"
@@ -41,6 +40,4 @@ class ParagraphImplTxt : public ParagraphImpl {
   double m_width = -1.0;
 };
 
-}  // namespace blink
-
-#endif  // FLUTTER_LIB_UI_TEXT_PARAGRAPH_IMPL_TXT_H_
+}

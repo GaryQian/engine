@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include <flutter/lib/ui/text/txt/paragraph_builder_impl_txt.h>
+#include <flutter/lib/ui/text/skia/paragraph_builder_impl_skia.h>
 #include "flutter/lib/ui/text/paragraph_builder.h"
 
 #include "flutter/common/settings.h"
@@ -134,6 +136,39 @@ IMPLEMENT_WRAPPERTYPEINFO(ui, ParagraphBuilder);
 
 FOR_EACH_BINDING(DART_NATIVE_CALLBACK)
 
+namespace {
+  void print_text_style(const txt::TextStyle& ts) {
+    //FML_LOG(ERROR) << "TextStyle1: " << std::endl;
+    //FML_LOG(ERROR) <<
+    //"color: " << ts.color << " " <<
+    //"FontWeight: " << (int)ts.font_weight << " " <<
+    //"FontFamily: " << (ts.font_families.empty() ? "none" : ts.font_families[0]) << " " <<
+    //"FontStyle: " << (int)ts.font_style << " " <<
+    //(ts.font_style == txt::FontStyle::normal ? "normal" : "italic") << " " <<
+    //"FontSize: " << ts.font_size << " " <<
+    //"LetterSpacing: " << ts.letter_spacing << " " <<
+    //"WordSpacing: " << ts.word_spacing << " " <<
+    //"Height: " << ts.height << " " <<
+    //"Locale: " << ts.locale << " " <<
+    //"Background: " << (ts.has_background ? std::to_string(ts.background.getColor()) : "none") << " " <<
+    //"Foreground: " << (ts.has_foreground ? std::to_string(ts.foreground.getColor()) : "none") << " " <<
+    //std::endl;
+  }
+
+  void print_paragraph_style(const txt::ParagraphStyle& ps) {
+/*
+    FML_LOG(ERROR) << "ParagraphStyle1: " << std::endl;
+    FML_LOG(ERROR) <<
+    "TextAlign: " << (int)ps.effective_align() << " " <<
+    "TextDirection: " << (int)ps.text_direction << " " <<
+    "MaxLines: " << ps.max_lines << " " <<
+    "Ellipsis: " << ps.ellipsis.c_str() << " " <<
+    std::endl;
+*/
+    print_text_style(ps.GetTextStyle());
+ }
+}
+
 void ParagraphBuilder::RegisterNatives(tonic::DartLibraryNatives* natives) {
   natives->Register(
       {{"ParagraphBuilder_constructor", ParagraphBuilder_constructor, 9, true},
@@ -223,6 +258,7 @@ ParagraphBuilder::ParagraphBuilder(
     double height,
     const std::u16string& ellipsis,
     const std::string& locale) {
+
   int32_t mask = encoded[0];
   txt::ParagraphStyle style;
 
@@ -273,9 +309,16 @@ ParagraphBuilder::ParagraphBuilder(
 
   FontCollection& font_collection =
       UIDartState::Current()->window()->client()->GetFontCollection();
-  m_paragraphBuilder = std::make_unique<txt::ParagraphBuilder>(
-      style, font_collection.GetFontCollection());
-}  // namespace blink
+
+  print_paragraph_style(style);
+  if (font_collection.skiaShaperEnabled()) {
+    m_paragraphBuilderImpl = std::make_unique<ParagraphBuilderImplSkia>
+        (style, font_collection.getSkiaFontCollection());
+  } else {
+    m_paragraphBuilderImpl = std::make_unique<ParagraphBuilderImplTxt>
+        (style, font_collection.getTxtFontCollection());
+  }
+}
 
 ParagraphBuilder::~ParagraphBuilder() = default;
 
@@ -316,13 +359,15 @@ void ParagraphBuilder::pushStyle(tonic::Int32List& encoded,
                                  Dart_Handle foreground_objects,
                                  Dart_Handle foreground_data,
                                  Dart_Handle shadows_data) {
+
+
   FML_DCHECK(encoded.num_elements() == 8);
 
   int32_t mask = encoded[0];
 
   // Set to use the properties of the previous style if the property is not
   // explicitly given.
-  txt::TextStyle style = m_paragraphBuilder->PeekStyle();
+  txt::TextStyle style = m_paragraphBuilderImpl->peekStyle();
 
   // Only change the style property from the previous value if a new explicitly
   // set value is available
@@ -354,7 +399,7 @@ void ParagraphBuilder::pushStyle(tonic::Int32List& encoded,
   }
 
   if (mask & (tsFontWeightMask | tsFontStyleMask | tsFontSizeMask |
-              tsLetterSpacingMask | tsWordSpacingMask)) {
+      tsLetterSpacingMask | tsWordSpacingMask)) {
     if (mask & tsFontWeightMask)
       style.font_weight =
           static_cast<txt::FontWeight>(encoded[tsFontWeightIndex]);
@@ -401,37 +446,35 @@ void ParagraphBuilder::pushStyle(tonic::Int32List& encoded,
   }
 
   if (mask & tsFontFamilyMask) {
-    style.font_families.insert(style.font_families.end(), fontFamilies.begin(),
-                               fontFamilies.end());
+    style.font_families.insert(
+        style.font_families.end(),
+        fontFamilies.begin(),
+        fontFamilies.end());
   }
 
-  m_paragraphBuilder->PushStyle(style);
+  print_text_style(style);
+  m_paragraphBuilderImpl->pushStyle(style);
 }
 
 void ParagraphBuilder::pop() {
-  m_paragraphBuilder->Pop();
+  m_paragraphBuilderImpl->pop();
 }
 
 Dart_Handle ParagraphBuilder::addText(const std::u16string& text) {
-  if (text.empty())
-    return Dart_Null();
 
-  // Use ICU to validate the UTF-16 input.  Calling u_strToUTF8 with a null
-  // output buffer will return U_BUFFER_OVERFLOW_ERROR if the input is well
-  // formed.
-  const UChar* text_ptr = reinterpret_cast<const UChar*>(text.data());
-  UErrorCode error_code = U_ZERO_ERROR;
-  u_strToUTF8(nullptr, 0, nullptr, text_ptr, text.size(), &error_code);
-  if (error_code != U_BUFFER_OVERFLOW_ERROR)
+  //icu::UnicodeString utf16 = icu::UnicodeString(text.data(), text.size());
+  //std::string str;
+  //utf16.toUTF8String(str);
+  //FML_LOG(ERROR) << "addText(" << str.c_str() << ")" << std::endl;
+  if (!m_paragraphBuilderImpl->addText(text)) {
     return tonic::ToDart("string is not well-formed UTF-16");
-
-  m_paragraphBuilder->AddText(text);
-
-  return Dart_Null();
+  } else {
+    return Dart_Null();
+  }
 }
 
 fml::RefPtr<Paragraph> ParagraphBuilder::build() {
-  return Paragraph::Create(m_paragraphBuilder->Build());
+  return m_paragraphBuilderImpl->build();
 }
 
-}  // namespace blink
+}

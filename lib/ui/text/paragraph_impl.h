@@ -2,12 +2,12 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef FLUTTER_LIB_UI_TEXT_PARAGRAPH_IMPL_H_
-#define FLUTTER_LIB_UI_TEXT_PARAGRAPH_IMPL_H_
+#pragma once
 
 #include "flutter/lib/ui/painting/canvas.h"
 #include "flutter/lib/ui/text/text_box.h"
 #include "flutter/third_party/txt/src/txt/paragraph.h"
+#include "third_party/skia/modules/skparagraph/include/SkParagraph.h"
 
 namespace blink {
 
@@ -44,6 +44,4 @@ class ParagraphImpl {
   virtual Dart_Handle getWordBoundary(unsigned offset) = 0;
 };
 
-}  // namespace blink
-
-#endif  // FLUTTER_LIB_UI_TEXT_PARAGRAPH_IMPL_H_
+}

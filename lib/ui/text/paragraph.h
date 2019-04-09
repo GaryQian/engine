@@ -2,20 +2,22 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef FLUTTER_LIB_UI_TEXT_PARAGRAPH_H_
-#define FLUTTER_LIB_UI_TEXT_PARAGRAPH_H_
+#pragma once
 
 #include "flutter/fml/message_loop.h"
 #include "flutter/lib/ui/dart_wrapper.h"
 #include "flutter/lib/ui/painting/canvas.h"
 #include "flutter/lib/ui/text/paragraph_impl.h"
-#include "flutter/lib/ui/text/paragraph_impl_txt.h"
+#include "flutter/lib/ui/text/txt/paragraph_impl_txt.h"
+#include "flutter/lib/ui/text/skia/paragraph_impl_skia.h"
 #include "flutter/lib/ui/text/text_box.h"
+
 #include "flutter/third_party/txt/src/txt/paragraph.h"
+#include "third_party/skia/modules/skparagraph/include/SkParagraph.h"
 
 namespace tonic {
 class DartLibraryNatives;
-}  // namespace tonic
+}
 
 namespace blink {
 
@@ -24,8 +26,11 @@ class Paragraph : public RefCountedDartWrappable<Paragraph> {
   FML_FRIEND_MAKE_REF_COUNTED(Paragraph);
 
  public:
-  static fml::RefPtr<Paragraph> Create(
-      std::unique_ptr<txt::Paragraph> paragraph) {
+  static fml::RefPtr<Paragraph> Create(std::unique_ptr<txt::Paragraph> paragraph) {
+    return fml::MakeRefCounted<Paragraph>(std::move(paragraph));
+  }
+
+  static fml::RefPtr<Paragraph> Create(std::unique_ptr<SkParagraph> paragraph) {
     return fml::MakeRefCounted<Paragraph>(std::move(paragraph));
   }
 
@@ -57,8 +62,7 @@ class Paragraph : public RefCountedDartWrappable<Paragraph> {
   std::unique_ptr<ParagraphImpl> m_paragraphImpl;
 
   explicit Paragraph(std::unique_ptr<txt::Paragraph> paragraph);
+  explicit Paragraph(std::unique_ptr<SkParagraph> paragraph);
 };
 
-}  // namespace blink
-
-#endif  // FLUTTER_LIB_UI_TEXT_PARAGRAPH_H_
+}

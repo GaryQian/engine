@@ -2,19 +2,18 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef FLUTTER_LIB_UI_TEXT_PARAGRAPH_BUILDER_H_
-#define FLUTTER_LIB_UI_TEXT_PARAGRAPH_BUILDER_H_
+#pragma once
 
 #include <memory>
 #include "flutter/lib/ui/dart_wrapper.h"
 #include "flutter/lib/ui/painting/paint.h"
 #include "flutter/lib/ui/text/paragraph.h"
-#include "flutter/third_party/txt/src/txt/paragraph_builder.h"
+#include "flutter/lib/ui/text/paragraph_builder_impl.h"
 #include "third_party/tonic/typed_data/int32_list.h"
 
 namespace tonic {
 class DartLibraryNatives;
-}  // namespace tonic
+}
 
 namespace blink {
 
@@ -69,9 +68,7 @@ class ParagraphBuilder : public RefCountedDartWrappable<ParagraphBuilder> {
                             const std::u16string& ellipsis,
                             const std::string& locale);
 
-  std::unique_ptr<txt::ParagraphBuilder> m_paragraphBuilder;
+  std::unique_ptr<ParagraphBuilderImpl> m_paragraphBuilderImpl;
 };
 
-}  // namespace blink
-
-#endif  // FLUTTER_LIB_UI_TEXT_PARAGRAPH_BUILDER_H_
+}

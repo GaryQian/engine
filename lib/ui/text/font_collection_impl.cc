@@ -30,46 +30,11 @@
 #include "flutter/lib/ui/text/txt/font_collection_impl_txt.h"
 
 namespace blink {
-
-namespace {
-
-void LoadFontFromList(tonic::Uint8List& font_data,
-                      Dart_Handle callback,
-                      std::string family_name) {
-  FontCollection& font_collection =
-      UIDartState::Current()->window()->client()->GetFontCollection();
-  font_collection.LoadFontFromList(
-      font_data.data(),
-      font_data.num_elements(),
-
-      family_name);
-  font_data.Release();
-  tonic::DartInvoke(callback, {tonic::ToDart(0)});
-}
-
-void _LoadFontFromList(Dart_NativeArguments args) {
-  tonic::DartCallStatic(LoadFontFromList, args);
-}
-
-}
-
-void FontCollection::RegisterNatives(tonic::DartLibraryNatives* natives) {
-  natives->Register({
-      {"loadFontFromList", _LoadFontFromList, 3, true},
-  });
-}
-
-void FontCollection::RegisterFonts(std::shared_ptr<AssetManager> asset_manager) {
-  m_fontCollectionImpl->RegisterFonts(asset_manager);
-}
-
-void FontCollection::RegisterTestFonts() {
-  m_fontCollectionImpl->RegisterTestFonts();
-}
-
-void FontCollection::LoadFontFromList(const uint8_t* font_data,
-                      int length,
-                      std::string family_name) {
-  m_fontCollectionImpl->LoadFontFromList(font_data, length, family_name);
+std::unique_ptr<FontCollectionImpl> FontCollectionImpl::create(bool skiaShaperEnabled) {
+  if (skiaShaperEnabled) {
+    return std::make_unique<FontCollectionImplSkia>();
+  } else {
+    return std::make_unique<FontCollectionImplTxt>();
+  }
 }
 }
