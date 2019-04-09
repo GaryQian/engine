@@ -312,6 +312,9 @@ public final class FlutterActivityDelegate
         if (intent.getBooleanExtra("trace-skia", false)) {
             args.add("--trace-skia");
         }
+        if (intent.getBooleanExtra("enable-skia-shaper", false)) {
+            args.add("--enable-skia-shaper");
+        }
         if (intent.getBooleanExtra("trace-systrace", false)) {
             args.add("--trace-systrace");
         }
