@@ -916,9 +916,9 @@ void Paragraph::Layout(double width, bool force) {
     }
 
     line_heights_.push_back((line_heights_.empty() ? 0 : line_heights_.back()) +
-                            round(max_ascent + max_descent));
+                            max_ascent + max_descent);
     line_baselines_.push_back(line_heights_.back() - max_descent);
-    y_offset += round(max_ascent + prev_max_descent);
+    y_offset += max_ascent + prev_max_descent;
     prev_max_descent = max_descent;
 
     // The max line spacing and ascent have been multiplied by -1 to make math
