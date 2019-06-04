@@ -4,6 +4,7 @@
 
 #include <third_party/skia/modules/skparagraph/include/ParagraphStyle.h>
 #include <third_party/skia/modules/skparagraph/include/ParagraphBuilder.h>
+#include "third_party/skia/modules/skparagraph/src/ParagraphBuilderImpl.h"
 #include <algorithm>
 #include "flutter/lib/ui/text/skia/paragraph_builder_impl_skia.h"
 

@@ -9,8 +9,13 @@
 #include "flutter/lib/ui/painting/paint.h"
 #include "flutter/lib/ui/text/paragraph.h"
 #include "flutter/lib/ui/text/paragraph_builder_impl.h"
-#include "third_party/skia/modules/skparagraph/src/ParagraphBuilderImpl.h"
 #include "third_party/tonic/typed_data/typed_list.h"
+
+namespace skia {
+  namespace textlayout {
+    class ParagraphBuilderImpl;
+  }
+}
 
 namespace flutter {
 
