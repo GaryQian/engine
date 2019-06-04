@@ -19,17 +19,15 @@
 #include "third_party/tonic/dart_args.h"
 #include "third_party/tonic/dart_library_natives.h"
 #include "third_party/tonic/logging/dart_invoke.h"
-#include "third_party/tonic/typed_data/uint8_list.h"
+#include "third_party/tonic/typed_data/typed_list.h"
 #include "txt/asset_font_manager.h"
 #include "txt/test_font_manager.h"
-
-#include "flutter/lib/ui/text/skia/typeface_font_provider.h"
 #include "flutter/lib/ui/text/skia/asset_font_provider.h"
 
 #include "flutter/lib/ui/text/skia/font_collection_impl_skia.h"
 #include "flutter/lib/ui/text/txt/font_collection_impl_txt.h"
 
-namespace blink {
+namespace flutter {
 std::unique_ptr<FontCollectionImpl> FontCollectionImpl::create(bool skiaShaperEnabled) {
   if (skiaShaperEnabled) {
     return std::make_unique<FontCollectionImplSkia>();

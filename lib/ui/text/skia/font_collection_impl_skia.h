@@ -6,9 +6,9 @@
 
 #include <memory>
 #include <vector>
+#include <third_party/skia/modules/skparagraph/src/TypefaceFontProvider.h>
 
 #include "flutter/lib/ui/text/font_collection_impl.h"
-#include "typeface_font_provider.h"
 #include "asset_font_provider.h"
 #include "flutter/assets/asset_manager.h"
 #include "flutter/fml/macros.h"
@@ -18,9 +18,8 @@ namespace tonic {
 class DartLibraryNatives;
 }
 
+namespace flutter {
 using namespace skia::textlayout;
-namespace blink {
-
 class FontCollectionImplSkia : public FontCollectionImpl {
  public:
   FontCollectionImplSkia();
@@ -35,12 +34,12 @@ class FontCollectionImplSkia : public FontCollectionImpl {
                         int length,
                         std::string family_name) override;
 
-  sk_sp<FontCollection> getSkiaFontCollection() override { return font_collection_; }
+  sk_sp<skia::textlayout::FontCollection> getSkiaFontCollection() override { return font_collection_; }
 
  private:
-  sk_sp<FontCollection> font_collection_;
+  sk_sp<skia::textlayout::FontCollection> font_collection_;
   sk_sp<TypefaceFontProvider> dynamic_font_manager_;
 };
 
-}  // namespace blink
+}  // namespace flutter
 

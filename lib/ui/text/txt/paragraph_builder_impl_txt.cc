@@ -24,7 +24,7 @@
 #include "third_party/tonic/dart_library_natives.h"
 #include "third_party/tonic/typed_data/dart_byte_data.h"
 
-namespace blink {
+namespace flutter {
 
 ParagraphBuilderImplTxt::ParagraphBuilderImplTxt(
     const txt::ParagraphStyle& style, std::shared_ptr<txt::FontCollection> fontCollection)

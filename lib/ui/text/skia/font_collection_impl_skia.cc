@@ -19,12 +19,12 @@
 #include "third_party/tonic/dart_args.h"
 #include "third_party/tonic/dart_library_natives.h"
 #include "third_party/tonic/logging/dart_invoke.h"
-#include "third_party/tonic/typed_data/uint8_list.h"
+#include "third_party/tonic/typed_data/typed_list.h"
 #include "txt/asset_font_manager.h"
 #include "txt/test_font_manager.h"
 #include "platform.h"
 
-namespace blink {
+namespace flutter {
 
 FontCollectionImplSkia::FontCollectionImplSkia()
     : font_collection_(sk_make_sp<skia::textlayout::FontCollection>())
@@ -105,7 +105,7 @@ void FontCollectionImplSkia::RegisterTestFonts() {
       SkTypeface::MakeFromStream(GetTestFontData());
 
   auto provider = sk_make_sp<TypefaceFontProvider>();
-  provider->RegisterTypeface(std::move(test_typeface), GetTestFontFamilyName());
+  provider->registerTypeface(std::move(test_typeface), SkString(GetTestFontFamilyName().c_str()));
   font_collection_->setTestFontManager(provider);
   font_collection_->disableFontFallback();
 }
@@ -122,9 +122,9 @@ void FontCollectionImplSkia::LoadFontFromList(
 
     auto provider = static_cast<TypefaceFontProvider*>(dynamic_font_manager_.get());
     if (family_name.empty()) {
-      provider->RegisterTypeface(typeface);
+      provider->registerTypeface(typeface);
     } else {
-      provider->RegisterTypeface(typeface, family_name);
+      provider->registerTypeface(typeface, SkString(family_name.c_str()));
     }
     // TODO: skia_collection_->ClearFontFamilyCache();
 }

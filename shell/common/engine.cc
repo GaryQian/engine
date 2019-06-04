@@ -91,11 +91,11 @@ bool Engine::UpdateAssetManager(
   }
 
   // Using libTXT or Skia as the text engine.
-  font_collection_ = std::make_unique<blink::FontCollection>(settings_.enable_skia_shaping);
-  font_collection_->RegisterFonts(asset_manager_);
+  font_collection_.SetImplementation(settings_.enable_skia_shaping);
+  font_collection_.RegisterFonts(asset_manager_);
 
   if (settings_.use_test_fonts) {
-    font_collection_->RegisterTestFonts();
+    font_collection_.RegisterTestFonts();
   }
 
   return true;
@@ -433,13 +433,8 @@ void Engine::UpdateIsolateDescription(const std::string isolate_name,
   delegate_.UpdateIsolateDescription(isolate_name, isolate_port);
 }
 
-<<<<<<< HEAD
 FontCollection& Engine::GetFontCollection() {
   return font_collection_;
-=======
-blink::FontCollection& Engine::GetFontCollection() {
-  return *font_collection_.get();
->>>>>>> origin/words
 }
 
 void Engine::HandleAssetPlatformMessage(fml::RefPtr<PlatformMessage> message) {

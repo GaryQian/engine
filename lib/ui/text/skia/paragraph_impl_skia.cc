@@ -15,7 +15,7 @@
 
 using tonic::ToDart;
 
-namespace blink {
+namespace flutter {
 
 ParagraphImplSkia::ParagraphImplSkia(std::unique_ptr<skia::textlayout::Paragraph> paragraph)
     : m_paragraph(std::move(paragraph)) {}
@@ -73,7 +73,7 @@ std::vector<TextBox> ParagraphImplSkia::getRectsForRange(
       start, end, (RectHeightStyle)rect_height_style, (RectWidthStyle)rect_width_style);
   for (const auto& box : boxes) {
     result.emplace_back(box.rect,
-                        static_cast<blink::TextDirection>(box.direction));
+                        static_cast<flutter::TextDirection>(box.direction));
   }
   return result;
 }
@@ -92,6 +92,16 @@ Dart_Handle ParagraphImplSkia::getWordBoundary(unsigned offset) {
   Dart_ListSetAt(result, 0, ToDart(point.start));
   Dart_ListSetAt(result, 1, ToDart(point.end));
   return result;
+}
+
+double ParagraphImplSkia::longestLine() {
+  // TODO: implement
+  return 0;
+}
+
+std::vector<TextBox> ParagraphImplSkia::getRectsForPlaceholders() {
+  // TODO: implement
+  return std::vector<TextBox>();
 }
 
 }

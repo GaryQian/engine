@@ -7,7 +7,7 @@
 #include "third_party/skia/include/ports/SkFontMgr_directory.h"
 #include "flutter/fml/logging.h"
 
-namespace blink {
+namespace flutter {
 
 std::string GetDefaultSkiaFontFamily() {
   return "Arial";

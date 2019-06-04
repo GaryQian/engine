@@ -11,7 +11,7 @@
 #include "third_party/skia/include/core/SkString.h"
 #include "third_party/skia/include/core/SkTypeface.h"
 
-namespace blink {
+namespace flutter {
 
 namespace {
 
@@ -32,7 +32,7 @@ std::string CanonicalFamilyName(std::string family_name) {
 }  // anonymous namespace
 
 AssetFontProvider::AssetFontProvider(
-    std::shared_ptr<blink::AssetManager> asset_manager)
+    std::shared_ptr<AssetManager> asset_manager)
     : asset_manager_(asset_manager) {}
 
 AssetFontProvider::~AssetFontProvider() = default;
@@ -71,7 +71,7 @@ void AssetFontProvider::RegisterAsset(std::string family_name, std::string asset
 }
 
 AssetFontStyleSet::AssetFontStyleSet(
-    std::shared_ptr<blink::AssetManager> asset_manager)
+    std::shared_ptr<AssetManager> asset_manager)
     : asset_manager_(asset_manager) {}
 
 AssetFontStyleSet::~AssetFontStyleSet() = default;
@@ -141,4 +141,4 @@ AssetFontStyleSet::TypefaceAsset::TypefaceAsset(
 
 AssetFontStyleSet::TypefaceAsset::~TypefaceAsset() = default;
 
-}  // namespace blink
+}  // namespace flutter

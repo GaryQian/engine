@@ -26,5 +26,5 @@
 
 #include "third_party/skia/modules/skparagraph/include/TextStyle.h"
 
-namespace blink {
+namespace flutter {
 }

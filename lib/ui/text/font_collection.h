@@ -25,9 +25,15 @@ namespace flutter {
 class FontCollection {
  public:
 
-  FontCollection(bool skia) {
+  FontCollection() {
+     m_fontCollectionImpl = nullptr;
+  }
+
+  void SetImplementation(bool skia) {
     m_skia = skia;
-    m_fontCollectionImpl = blink::FontCollectionImpl::create(skia);
+    m_fontCollectionImpl = skia
+        ? flutter::FontCollectionImpl::create(true)
+        : flutter::FontCollectionImpl::create(false);
   }
 
   ~FontCollection() = default;
@@ -54,7 +60,7 @@ class FontCollection {
 
  private:
 
-  std::unique_ptr<blink::FontCollectionImpl> m_fontCollectionImpl;
+  std::unique_ptr<flutter::FontCollectionImpl> m_fontCollectionImpl;
   bool m_skia;
 
   FML_DISALLOW_COPY_AND_ASSIGN(FontCollection);

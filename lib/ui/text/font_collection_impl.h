@@ -18,7 +18,7 @@ namespace tonic {
 class DartLibraryNatives;
 }
 
-namespace blink {
+namespace flutter {
 
 class FontCollectionImpl {
  public:

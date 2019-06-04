@@ -9,10 +9,10 @@
 #include "flutter/lib/ui/painting/paint.h"
 #include "flutter/lib/ui/text/paragraph.h"
 #include "flutter/lib/ui/text/paragraph_builder_impl.h"
-#include "third_party/skia/modules/skparagraph/include/ParagraphBuilder.h"
-#include "third_party/tonic/typed_data/int32_list.h"
+#include "third_party/skia/modules/skparagraph/src/ParagraphBuilderImpl.h"
+#include "third_party/tonic/typed_data/typed_list.h"
 
-namespace blink {
+namespace flutter {
 
 class ParagraphBuilderImplSkia : public ParagraphBuilderImpl {
 
@@ -33,7 +33,7 @@ class ParagraphBuilderImplSkia : public ParagraphBuilderImpl {
   fml::RefPtr<Paragraph> build() override;
 
  private:
-  std::shared_ptr<ParagraphBuilder> m_builder;
+  std::shared_ptr<skia::textlayout::ParagraphBuilderImpl> m_builder;
 
 };
 

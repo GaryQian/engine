@@ -17,7 +17,7 @@ namespace tonic {
 class DartLibraryNatives;
 }
 
-namespace blink {
+namespace flutter {
 
 class FontCollectionImplTxt : public FontCollectionImpl {
  public:
@@ -25,7 +25,7 @@ class FontCollectionImplTxt : public FontCollectionImpl {
 
   ~FontCollectionImplTxt() override;
 
-  void RegisterFonts(std::shared_ptr<AssetManager> asset_manager) override;
+  void RegisterFonts(std::shared_ptr<flutter::AssetManager> asset_manager) override;
 
   void RegisterTestFonts() override;
 

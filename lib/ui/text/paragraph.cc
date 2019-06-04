@@ -41,7 +41,7 @@ Paragraph::Paragraph(std::unique_ptr<txt::Paragraph> paragraph)
     : m_paragraphImpl(
           std::make_unique<ParagraphImplTxt>(std::move(paragraph))) {}
 
-Paragraph::Paragraph(std::unique_ptr<SkParagraph> paragraph)
+Paragraph::Paragraph(std::unique_ptr<skia::textlayout::Paragraph> paragraph)
     : m_paragraphImpl(
         std::make_unique<ParagraphImplSkia>(std::move(paragraph))) {}
 

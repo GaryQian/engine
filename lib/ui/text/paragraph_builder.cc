@@ -320,10 +320,10 @@ ParagraphBuilder::ParagraphBuilder(
 
   print_paragraph_style(style);
   if (font_collection.skiaShaperEnabled()) {
-    m_paragraphBuilderImpl = std::make_unique<blink::ParagraphBuilderImplSkia>
+    m_paragraphBuilderImpl = std::make_unique<flutter::ParagraphBuilderImplSkia>
         (style, font_collection.getSkiaFontCollection());
   } else {
-    m_paragraphBuilderImpl = std::make_unique<blink::ParagraphBuilderImplTxt>
+    m_paragraphBuilderImpl = std::make_unique<flutter::ParagraphBuilderImplTxt>
         (style, font_collection.getTxtFontCollection());
   }
 }
@@ -511,7 +511,8 @@ Dart_Handle ParagraphBuilder::addPlaceholder(double width,
       width, height, static_cast<txt::PlaceholderAlignment>(alignment),
       static_cast<txt::TextBaseline>(baseline), baseline_offset);
 
-  m_paragraphBuilder->AddPlaceholder(placeholder_run);
+  // TODO: Implement
+  //m_paragraphBuilder->AddPlaceholder(placeholder_run);
 
   return Dart_Null();
 }

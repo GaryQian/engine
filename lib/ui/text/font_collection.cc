@@ -23,8 +23,6 @@
 #include "txt/asset_font_manager.h"
 #include "txt/test_font_manager.h"
 
-namespace flutter {
-#include "flutter/lib/ui/text/skia/typeface_font_provider.h"
 #include "flutter/lib/ui/text/skia/asset_font_provider.h"
 
 #include "flutter/lib/ui/text/skia/font_collection_impl_skia.h"
@@ -35,8 +33,8 @@ namespace {
 void LoadFontFromList(tonic::Uint8List& font_data,
                       Dart_Handle callback,
                       std::string family_name) {
-  FontCollection& font_collection =
-      UIDartState::Current()->window()->client()->GetFontCollection();
+  flutter::FontCollection& font_collection =
+      flutter::UIDartState::Current()->window()->client()->GetFontCollection();
   font_collection.LoadFontFromList(
       font_data.data(),
       font_data.num_elements(),
@@ -51,6 +49,8 @@ void _LoadFontFromList(Dart_NativeArguments args) {
 }
 
 }
+
+namespace flutter {
 
 void FontCollection::RegisterNatives(tonic::DartLibraryNatives* natives) {
   natives->Register({

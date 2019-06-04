@@ -14,11 +14,11 @@
 #include "third_party/skia/include/core/SkFontMgr.h"
 #include "third_party/skia/include/core/SkTypeface.h"
 
-namespace blink {
+namespace flutter {
 
 class AssetFontStyleSet : public SkFontStyleSet {
  public:
-  AssetFontStyleSet(std::shared_ptr<blink::AssetManager> asset_manager);
+  AssetFontStyleSet(std::shared_ptr<AssetManager> asset_manager);
 
   ~AssetFontStyleSet() override;
 
@@ -33,7 +33,7 @@ class AssetFontStyleSet : public SkFontStyleSet {
   SkTypeface* matchStyle(const SkFontStyle& pattern) override;
 
  private:
-  std::shared_ptr<blink::AssetManager> asset_manager_;
+  std::shared_ptr<AssetManager> asset_manager_;
 
   struct TypefaceAsset {
     TypefaceAsset(std::string a);
@@ -52,7 +52,7 @@ class AssetFontStyleSet : public SkFontStyleSet {
 
 class AssetFontProvider : public SkFontMgr {
  public:
-  AssetFontProvider(std::shared_ptr<blink::AssetManager> asset_manager);
+  AssetFontProvider(std::shared_ptr<AssetManager> asset_manager);
 
   ~AssetFontProvider() override;
 
@@ -92,4 +92,4 @@ class AssetFontProvider : public SkFontMgr {
   FML_DISALLOW_COPY_AND_ASSIGN(AssetFontProvider);
 };
 
-}  // namespace blink
+}  // namespace flutter

@@ -5,11 +5,11 @@
 #include "platform.h"
 #include "flutter/fml/logging.h"
 
-#include "SkTypes.h"
+#include "include/core/SkTypes.h"
 #include "include/core/SkFontMgr.h"
 #include "include/ports/SkFontMgr_android.h"
 
-namespace blink {
+namespace flutter {
 
 std::string GetDefaultSkiaFontFamily() {
   return "sans-serif";

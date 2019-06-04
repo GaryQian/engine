@@ -8,8 +8,8 @@
 #include "flutter/lib/ui/text/paragraph_impl.h"
 #include "flutter/lib/ui/text/text_box.h"
 
+namespace flutter {
 using namespace skia::textlayout;
-namespace blink {
 
 class ParagraphImplSkia : public ParagraphImpl {
  public:
@@ -19,6 +19,7 @@ class ParagraphImplSkia : public ParagraphImpl {
 
   double width() override;
   double height() override;
+  double longestLine() override;
   double minIntrinsicWidth() override;
   double maxIntrinsicWidth() override;
   double alphabeticBaseline() override;
@@ -33,6 +34,7 @@ class ParagraphImplSkia : public ParagraphImpl {
       unsigned end,
       txt::Paragraph::RectHeightStyle rect_height_style,
       txt::Paragraph::RectWidthStyle rect_width_style) override;
+  std::vector<TextBox> getRectsForPlaceholders() override;
   Dart_Handle getPositionForOffset(double dx, double dy) override;
   Dart_Handle getWordBoundary(unsigned offset) override;
 

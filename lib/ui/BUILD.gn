@@ -76,8 +76,6 @@ source_set("ui") {
     "text/skia/paragraph_builder_impl_skia.h",
     "text/skia/paragraph_impl_skia.cc",
     "text/skia/paragraph_impl_skia.h",
-    "text/skia/typeface_font_provider.cc",
-    "text/skia/typeface_font_provider.h",
     "text/txt/asset_manager_font_provider.cc",
     "text/txt/asset_manager_font_provider.h",
     "text/txt/font_collection_impl_txt.cc",

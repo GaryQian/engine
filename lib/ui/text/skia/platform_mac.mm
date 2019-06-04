@@ -15,7 +15,7 @@
 #define FONT_CLASS NSFont
 #endif  // TARGET_OS_EMBEDDED
 
-namespace blink {
+namespace flutter {
 
 std::string GetDefaultSkiaFontFamily() {
   if (fml::IsPlatformVersionAtLeast(9)) {

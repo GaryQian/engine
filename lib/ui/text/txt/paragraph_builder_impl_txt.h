@@ -9,9 +9,9 @@
 #include "flutter/lib/ui/painting/paint.h"
 #include "flutter/lib/ui/text/paragraph_builder_impl.h"
 #include "flutter/third_party/txt/src/txt/paragraph_builder.h"
-#include "third_party/tonic/typed_data/int32_list.h"
+#include "third_party/tonic/typed_data/typed_list.h"
 
-namespace blink {
+namespace flutter {
 
 class ParagraphBuilderImplTxt : public ParagraphBuilderImpl {
 

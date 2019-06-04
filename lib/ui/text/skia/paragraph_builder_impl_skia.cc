@@ -31,7 +31,7 @@
 
 namespace skt = skia::textlayout;
 
-namespace blink {
+namespace flutter {
 
 namespace {
   skt::TextStyle txt_to_skia(const txt::TextStyle& txt) {
@@ -213,7 +213,7 @@ namespace {
 
 ParagraphBuilderImplSkia::ParagraphBuilderImplSkia(
     const txt::ParagraphStyle& style, sk_sp<skt::FontCollection> fontCollection)
-  : m_builder(std::make_shared<skt::ParagraphBuilder>(txt_to_skia(style), fontCollection)) {
+  : m_builder(std::make_shared<skt::ParagraphBuilderImpl>(txt_to_skia(style), fontCollection)) {
   print_paragraph_style(txt_to_skia(style));
 }
 

@@ -4,7 +4,7 @@
 
 #include "platform.h"
 
-namespace blink {
+namespace flutter {
 
 std::string GetDefaultFontFamily() {
   return "Arial";

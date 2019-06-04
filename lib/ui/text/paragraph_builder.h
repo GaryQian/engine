@@ -84,7 +84,7 @@ class ParagraphBuilder : public RefCountedDartWrappable<ParagraphBuilder> {
                             const std::u16string& ellipsis,
                             const std::string& locale);
 
-  std::unique_ptr<blink::ParagraphBuilderImpl> m_paragraphBuilderImpl;
+  std::unique_ptr<flutter::ParagraphBuilderImpl> m_paragraphBuilderImpl;
 };
 
 }  // namespace flutter

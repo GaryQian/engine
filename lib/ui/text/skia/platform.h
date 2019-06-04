@@ -9,7 +9,7 @@
 
 #include "third_party/skia/include/core/SkFontMgr.h"
 
-namespace blink {
+namespace flutter {
 
 std::string GetDefaultSkiaFontFamily();
 
