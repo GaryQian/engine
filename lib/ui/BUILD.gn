@@ -67,20 +67,38 @@ source_set("ui") {
     "semantics/semantics_update_builder.cc",
     "semantics/semantics_update_builder.h",
     "snapshot_delegate.h",
-    "text/asset_manager_font_provider.cc",
-    "text/asset_manager_font_provider.h",
+
+    "text/skia/asset_font_provider.cc",
+    "text/skia/asset_font_provider.h",
+    "text/skia/font_collection_impl_skia.cc",
+    "text/skia/font_collection_impl_skia.h",
+    "text/skia/paragraph_builder_impl_skia.cc",
+    "text/skia/paragraph_builder_impl_skia.h",
+    "text/skia/paragraph_impl_skia.cc",
+    "text/skia/paragraph_impl_skia.h",
+    "text/txt/asset_manager_font_provider.cc",
+    "text/txt/asset_manager_font_provider.h",
+    "text/txt/font_collection_impl_txt.cc",
+    "text/txt/font_collection_impl_txt.h",
+    "text/txt/paragraph_builder_impl_txt.cc",
+    "text/txt/paragraph_builder_impl_txt.h",
+    "text/txt/paragraph_impl_txt.cc",
+    "text/txt/paragraph_impl_txt.h",
     "text/font_collection.cc",
     "text/font_collection.h",
+    "text/font_collection_impl.cc",
+    "text/font_collection_impl.h",
     "text/paragraph.cc",
     "text/paragraph.h",
     "text/paragraph_builder.cc",
     "text/paragraph_builder.h",
+    "text/paragraph_builder_impl.cc",
+    "text/paragraph_builder_impl.h",
     "text/paragraph_impl.cc",
     "text/paragraph_impl.h",
-    "text/paragraph_impl_txt.cc",
-    "text/paragraph_impl_txt.h",
     "text/text_box.cc",
     "text/text_box.h",
+
     "ui_dart_state.cc",
     "ui_dart_state.h",
     "window/platform_message.cc",
@@ -99,6 +117,17 @@ source_set("ui") {
     "window/window.h",
   ]
 
+  sources += [ "text/skia/platform.h" ]
+  if (is_mac || is_ios) {
+    sources += [ "text/skia/platform_mac.mm" ]
+  } else if (is_android) {
+    sources += [ "text/skia/platform_android.cc" ]
+  } else if (is_linux) {
+    sources += [ "text/skia/platform_linux.cc" ]
+  } else {
+    sources += [ "text/skia/platform.cc" ]
+  }
+
   public_configs = [ "$flutter_root:config" ]
 
   deps = [
@@ -110,11 +139,14 @@ source_set("ui") {
     "//third_party/dart/runtime/bin:dart_io_api",
     "//third_party/rapidjson",
     "//third_party/skia",
+    "//third_party/skia/modules/skparagraph",
+    "//third_party/skia/modules/skshaper",
     "//third_party/tonic",
   ]
 
   public_deps = [
     "$flutter_root/third_party/txt",
+    "//third_party/skia",
   ]
 
   if (is_fuchsia) {

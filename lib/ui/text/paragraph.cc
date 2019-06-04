@@ -41,6 +41,10 @@ Paragraph::Paragraph(std::unique_ptr<txt::Paragraph> paragraph)
     : m_paragraphImpl(
           std::make_unique<ParagraphImplTxt>(std::move(paragraph))) {}
 
+Paragraph::Paragraph(std::unique_ptr<skia::textlayout::Paragraph> paragraph)
+    : m_paragraphImpl(
+        std::make_unique<ParagraphImplSkia>(std::move(paragraph))) {}
+
 Paragraph::~Paragraph() = default;
 
 size_t Paragraph::GetAllocationSize() {
@@ -84,9 +88,18 @@ bool Paragraph::didExceedMaxLines() {
 
 void Paragraph::layout(double width) {
   m_paragraphImpl->layout(width);
+/*
+  FML_LOG(ERROR) << "Layout "
+                 << this->width() << " "
+                 << this->height() << " "
+                 << this->minIntrinsicWidth() << " "
+                 << this->maxIntrinsicWidth() << std::endl;
+*/
 }
 
 void Paragraph::paint(Canvas* canvas, double x, double y) {
+
+  //FML_LOG(ERROR) << "Paint " << x << "," << y << std:: endl;
   m_paragraphImpl->paint(canvas, x, y);
 }
 

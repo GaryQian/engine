@@ -281,6 +281,9 @@ Settings SettingsFromCommandLine(const fml::CommandLine& command_line) {
   settings.dump_skp_on_shader_compilation =
       command_line.HasOption(FlagForSwitch(Switch::DumpSkpOnShaderCompilation));
 
+  settings.enable_skia_shaping =
+      command_line.HasOption(FlagForSwitch(Switch::EnableSkiaShaper));
+
   return settings;
 }
 
