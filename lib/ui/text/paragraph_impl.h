@@ -7,7 +7,7 @@
 #include "flutter/lib/ui/painting/canvas.h"
 #include "flutter/lib/ui/text/text_box.h"
 #include "flutter/third_party/txt/src/txt/paragraph.h"
-#include "third_party/skia/modules/skparagraph/include/SkParagraph.h"
+#include "third_party/skia/modules/skparagraph/include/Paragraph.h"
 
 namespace blink {
 

@@ -9,7 +9,7 @@
 #include "flutter/lib/ui/painting/paint.h"
 #include "flutter/lib/ui/text/paragraph.h"
 #include "flutter/third_party/txt/src/txt/paragraph_builder.h"
-#include "third_party/skia/modules/skparagraph/include/SkParagraphBuilder.h"
+#include "third_party/skia/modules/skparagraph/include/ParagraphBuilder.h"
 #include "third_party/tonic/typed_data/int32_list.h"
 #include "flutter/lib/ui/text/font_collection.h"
 

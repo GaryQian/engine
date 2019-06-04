@@ -27,11 +27,11 @@
 namespace blink {
 
 FontCollectionImplSkia::FontCollectionImplSkia()
-    : font_collection_(sk_make_sp<SkFontCollection>())
+    : font_collection_(sk_make_sp<skia::textlayout::FontCollection>())
     , dynamic_font_manager_(sk_make_sp<TypefaceFontProvider>()) {
 
     font_collection_->setDynamicFontManager(dynamic_font_manager_);
-    font_collection_->setDefaultFontManager(GetDefaultSkiaFontManager(), GetDefaultSkiaFontFamily());
+    font_collection_->setDefaultFontManager(GetDefaultSkiaFontManager(), GetDefaultSkiaFontFamily().c_str());
 }
 
 FontCollectionImplSkia::~FontCollectionImplSkia() {

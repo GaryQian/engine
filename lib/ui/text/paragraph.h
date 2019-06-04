@@ -13,7 +13,7 @@
 #include "flutter/lib/ui/text/text_box.h"
 
 #include "flutter/third_party/txt/src/txt/paragraph.h"
-#include "third_party/skia/modules/skparagraph/include/SkParagraph.h"
+#include "third_party/skia/modules/skparagraph/include/Paragraph.h"
 
 namespace tonic {
 class DartLibraryNatives;
@@ -30,7 +30,7 @@ class Paragraph : public RefCountedDartWrappable<Paragraph> {
     return fml::MakeRefCounted<Paragraph>(std::move(paragraph));
   }
 
-  static fml::RefPtr<Paragraph> Create(std::unique_ptr<SkParagraph> paragraph) {
+  static fml::RefPtr<Paragraph> Create(std::unique_ptr<skia::textlayout::Paragraph> paragraph) {
     return fml::MakeRefCounted<Paragraph>(std::move(paragraph));
   }
 
@@ -62,7 +62,7 @@ class Paragraph : public RefCountedDartWrappable<Paragraph> {
   std::unique_ptr<ParagraphImpl> m_paragraphImpl;
 
   explicit Paragraph(std::unique_ptr<txt::Paragraph> paragraph);
-  explicit Paragraph(std::unique_ptr<SkParagraph> paragraph);
+  explicit Paragraph(std::unique_ptr<skia::textlayout::Paragraph> paragraph);
 };
 
 }

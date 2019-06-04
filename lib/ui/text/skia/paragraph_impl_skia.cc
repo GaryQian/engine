@@ -11,13 +11,13 @@
 #include "flutter/lib/ui/text/paragraph_impl.h"
 #include "third_party/skia/include/core/SkPoint.h"
 #include "third_party/tonic/converter/dart_converter.h"
-#include "third_party/skia/modules/skparagraph/include/SkDartTypes.h"
+#include "third_party/skia/modules/skparagraph/include/DartTypes.h"
 
 using tonic::ToDart;
 
 namespace blink {
 
-ParagraphImplSkia::ParagraphImplSkia(std::unique_ptr<SkParagraph> paragraph)
+ParagraphImplSkia::ParagraphImplSkia(std::unique_ptr<skia::textlayout::Paragraph> paragraph)
     : m_paragraph(std::move(paragraph)) {}
 
 ParagraphImplSkia::~ParagraphImplSkia() {}

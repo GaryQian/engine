@@ -8,13 +8,14 @@
 #include "flutter/lib/ui/text/paragraph_impl.h"
 #include "flutter/lib/ui/text/text_box.h"
 
+using namespace skia::textlayout;
 namespace blink {
 
 class ParagraphImplSkia : public ParagraphImpl {
  public:
   ~ParagraphImplSkia() override;
 
-  explicit ParagraphImplSkia(std::unique_ptr<SkParagraph> paragraph);
+  explicit ParagraphImplSkia(std::unique_ptr<Paragraph> paragraph);
 
   double width() override;
   double height() override;
@@ -36,7 +37,7 @@ class ParagraphImplSkia : public ParagraphImpl {
   Dart_Handle getWordBoundary(unsigned offset) override;
 
  private:
-  std::unique_ptr<SkParagraph> m_paragraph;
+  std::unique_ptr<Paragraph> m_paragraph;
   double m_width = -1.0;
 };
 

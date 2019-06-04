@@ -2,6 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include <third_party/skia/modules/skparagraph/include/ParagraphStyle.h>
+#include <third_party/skia/modules/skparagraph/include/ParagraphBuilder.h>
+#include <algorithm>
 #include "flutter/lib/ui/text/skia/paragraph_builder_impl_skia.h"
 
 #include "flutter/common/settings.h"
@@ -24,18 +27,20 @@
 #include "third_party/tonic/dart_library_natives.h"
 #include "third_party/tonic/typed_data/dart_byte_data.h"
 
-#include "third_party/skia/modules/skparagraph/include/SkTextStyle.h"
+#include "third_party/skia/modules/skparagraph/include/TextStyle.h"
+
+namespace skt = skia::textlayout;
 
 namespace blink {
 
 namespace {
-  SkTextStyle txt_to_skia(const txt::TextStyle& txt) {
-    SkTextStyle skia;
+  skt::TextStyle txt_to_skia(const txt::TextStyle& txt) {
+    skt::TextStyle skia;
 
     skia.setColor(txt.color);
-    skia.setDecoration((SkTextDecoration)txt.decoration);
+    skia.setDecoration((skt::TextDecoration)txt.decoration);
     skia.setDecorationColor(txt.decoration_color);
-    skia.setDecorationStyle((SkTextDecorationStyle)txt.decoration_style);
+    skia.setDecorationStyle((skt::TextDecorationStyle)txt.decoration_style);
     skia.setDecorationThicknessMultiplier(SkDoubleToScalar(txt.decoration_thickness_multiplier));
 
     SkFontStyle fontStyle(
@@ -45,21 +50,27 @@ namespace {
             ? SkFontStyle::Slant::kUpright_Slant
             : SkFontStyle::Slant::kItalic_Slant);
     skia.setFontStyle(fontStyle);
-    skia.setTextBaseline((SkTextBaseline)txt.text_baseline);
-    skia.setFontFamilies(txt.font_families);
+    skia.setTextBaseline((skt::TextBaseline)txt.text_baseline);
+
+    std::vector<SkString> skiaFonts;
+    std::transform(txt.font_families.begin(),
+                   txt.font_families.end(),
+                   std::back_inserter(skiaFonts),
+                   [](const std::string& f) { return SkString(f.c_str()); });
+    skia.setFontFamilies(skiaFonts);
 
     skia.setFontSize(SkDoubleToScalar(txt.font_size));
     skia.setLetterSpacing(SkDoubleToScalar(txt.letter_spacing));
     skia.setWordSpacing(SkDoubleToScalar(txt.word_spacing));
     skia.setHeight(SkDoubleToScalar(txt.height));
 
-    skia.setLocale(txt.locale);
+    skia.setLocale(SkString(txt.locale.c_str()));
     if (txt.has_background) skia.setBackgroundColor(txt.background);
     if (txt.has_foreground) skia.setForegroundColor(txt.foreground);
 
     skia.resetShadows();
     for (auto& shadow : txt.text_shadows) {
-      SkTextShadow shadow1;
+      skt::TextShadow shadow1;
       shadow1.fOffset = shadow.offset;
       shadow1.fBlurRadius = shadow.blur_radius;
       shadow1.fColor = shadow.color;
@@ -69,7 +80,7 @@ namespace {
     return skia;
   };
 
-  txt::TextStyle skia_to_txt(const SkTextStyle& skia) {
+  txt::TextStyle skia_to_txt(const skt::TextStyle& skia) {
 
     txt::TextStyle txt;
 
@@ -83,12 +94,18 @@ namespace {
           ? txt::FontStyle::italic
           : txt::FontStyle::normal;
     txt.text_baseline = (txt::TextBaseline) skia.getTextBaseline();
-    txt.font_families = { skia.getFirstFontFamily() };
+
+    std::vector<std::string> txtFonts;
+    std::transform(skia.getFontFamilies().begin(),
+                   skia.getFontFamilies().end(),
+                   std::back_inserter(txtFonts),
+                   [](const SkString& f) { return f.c_str(); });
+    txt.font_families = txtFonts;
     txt.font_size  = skia.getFontSize();
     txt.letter_spacing = skia.getLetterSpacing();
     txt.word_spacing = skia.getWordSpacing();
     txt.height = skia.getHeight();
-    txt.locale = skia.getLocale();
+    txt.locale = skia.getLocale().c_str();
     if ((txt.has_background = skia.hasBackground())) {
       txt.background = skia.getBackground();
     }
@@ -107,12 +124,12 @@ namespace {
     return txt;
   };
 
-  SkParagraphStyle txt_to_skia(const txt::ParagraphStyle& txt) {
-    SkParagraphStyle skia;
+  skt::ParagraphStyle txt_to_skia(const txt::ParagraphStyle& txt) {
+    skt::ParagraphStyle skia;
 
-    SkTextStyle textStyle;
+    skt::TextStyle textStyle;
     SkFontStyle fontStyle(
-        (SkFontStyle::Weight)txt.font_weight,
+        (SkFontStyle::Weight)((int)txt.font_weight * 100 + 100),
         SkFontStyle::Width::kNormal_Width,
         txt.font_style == txt::FontStyle::normal
         ? SkFontStyle::Slant::kUpright_Slant
@@ -120,15 +137,36 @@ namespace {
     textStyle.setFontStyle(fontStyle);
     textStyle.setFontSize(SkDoubleToScalar(txt.font_size));
     textStyle.setHeight(SkDoubleToScalar(txt.height));
-    textStyle.setFontFamily(txt.font_family);
-    textStyle.setLocale(txt.locale);
+    textStyle.setFontFamilies({ SkString(txt.font_family.c_str()) });
+    textStyle.setLocale(SkString(txt.locale.c_str()));
     skia.setTextStyle(textStyle);
 
     // TODO: strut
+    skt::StrutStyle strutStyle;
+    SkFontStyle fontStyle1(
+        (SkFontStyle::Weight)((int)txt.strut_font_weight * 100 + 100),
+        SkFontStyle::Width::kNormal_Width,
+        txt.strut_font_style == txt::FontStyle::normal
+        ? SkFontStyle::Slant::kUpright_Slant
+        : SkFontStyle::Slant::kItalic_Slant);
+    strutStyle.setFontStyle(fontStyle1);
+    strutStyle.setFontSize(SkDoubleToScalar(txt.strut_font_size));
+    strutStyle.setHeight(SkDoubleToScalar(txt.strut_height));
+
+    std::vector<SkString> skiaFonts;
+    std::transform(txt.strut_font_families.begin(),
+                   txt.strut_font_families.end(),
+                   std::back_inserter(skiaFonts),
+                   [](const std::string& f) { return SkString(f.c_str()); });
+    strutStyle.setFontFamilies(skiaFonts);
+    strutStyle.setLeading(txt.strut_leading);
+    strutStyle.setForceStrutHeight(txt.force_strut_height);
+    strutStyle.setStrutEnabled(txt.strut_enabled);
+    skia.setStrutStyle(strutStyle);
 
     // General paragraph properties.
-    skia.setTextAlign((SkTextAlign)txt.text_align);
-    skia.setTextDirection((SkTextDirection)txt.text_direction);
+    skia.setTextAlign((skt::TextAlign)txt.text_align);
+    skia.setTextDirection((skt::TextDirection)txt.text_direction);
     skia.setMaxLines(txt.max_lines);
     skia.setEllipsis(txt.ellipsis);
 
@@ -140,7 +178,7 @@ namespace {
     return skia;
   }
 
-  void print_text_style(const SkTextStyle& ts) {
+  void print_text_style(const skt::TextStyle& ts) {
     //FML_LOG(ERROR) << "TextStyle2: " << std::endl;
     //FML_LOG(ERROR) <<
     //"color: " << ts.getColor() << " " <<
@@ -158,7 +196,7 @@ namespace {
     //std::endl;
   }
 
-  void print_paragraph_style(SkParagraphStyle ps) {
+  void print_paragraph_style(skt::ParagraphStyle ps) {
     /*
     FML_LOG(ERROR) << "ParagraphStyle2: " << std::endl;
     FML_LOG(ERROR) <<
@@ -174,8 +212,8 @@ namespace {
 }
 
 ParagraphBuilderImplSkia::ParagraphBuilderImplSkia(
-    const txt::ParagraphStyle& style, sk_sp<SkFontCollection> fontCollection)
-  : m_builder(std::make_shared<SkParagraphBuilder>(txt_to_skia(style), fontCollection)) {
+    const txt::ParagraphStyle& style, sk_sp<skt::FontCollection> fontCollection)
+  : m_builder(std::make_shared<skt::ParagraphBuilder>(txt_to_skia(style), fontCollection)) {
   print_paragraph_style(txt_to_skia(style));
 }
 

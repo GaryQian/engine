@@ -155,5 +155,6 @@ source_set("ui") {
 
   public_deps = [
     "$flutter_root/third_party/txt",
+    "//third_party/skia",
   ]
 }

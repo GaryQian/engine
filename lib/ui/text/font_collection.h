@@ -8,7 +8,7 @@
 #include <vector>
 #include <flutter/lib/ui/text/skia/font_collection_impl_skia.h>
 
-#include "third_party/skia/modules/skparagraph/include/SkFontCollection.h"
+#include "third_party/skia/modules/skparagraph/include/FontCollection.h"
 #include "txt/font_collection.h"
 #include "flutter/lib/ui/text/font_collection_impl.h"
 #include "flutter/assets/asset_manager.h"
@@ -39,7 +39,7 @@ class FontCollection {
                                 int length,
                                 std::string family_name);
 
-  sk_sp<SkFontCollection> getSkiaFontCollection() {
+  sk_sp<skia::textlayout::FontCollection> getSkiaFontCollection() {
     return m_fontCollectionImpl->getSkiaFontCollection();
   }
 

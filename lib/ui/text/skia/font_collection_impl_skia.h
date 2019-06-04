@@ -18,6 +18,7 @@ namespace tonic {
 class DartLibraryNatives;
 }
 
+using namespace skia::textlayout;
 namespace blink {
 
 class FontCollectionImplSkia : public FontCollectionImpl {
@@ -34,10 +35,10 @@ class FontCollectionImplSkia : public FontCollectionImpl {
                         int length,
                         std::string family_name) override;
 
-  sk_sp<SkFontCollection> getSkiaFontCollection() override { return font_collection_; }
+  sk_sp<FontCollection> getSkiaFontCollection() override { return font_collection_; }
 
  private:
-  sk_sp<SkFontCollection> font_collection_;
+  sk_sp<FontCollection> font_collection_;
   sk_sp<TypefaceFontProvider> dynamic_font_manager_;
 };
 

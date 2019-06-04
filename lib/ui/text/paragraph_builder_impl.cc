@@ -24,7 +24,7 @@
 #include "third_party/tonic/dart_library_natives.h"
 #include "third_party/tonic/typed_data/dart_byte_data.h"
 
-#include "third_party/skia/modules/skparagraph/include/SkTextStyle.h"
+#include "third_party/skia/modules/skparagraph/include/TextStyle.h"
 
 namespace blink {
 }

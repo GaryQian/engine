@@ -138,21 +138,21 @@ FOR_EACH_BINDING(DART_NATIVE_CALLBACK)
 
 namespace {
   void print_text_style(const txt::TextStyle& ts) {
-    //FML_LOG(ERROR) << "TextStyle1: " << std::endl;
-    //FML_LOG(ERROR) <<
-    //"color: " << ts.color << " " <<
-    //"FontWeight: " << (int)ts.font_weight << " " <<
-    //"FontFamily: " << (ts.font_families.empty() ? "none" : ts.font_families[0]) << " " <<
-    //"FontStyle: " << (int)ts.font_style << " " <<
-    //(ts.font_style == txt::FontStyle::normal ? "normal" : "italic") << " " <<
-    //"FontSize: " << ts.font_size << " " <<
-    //"LetterSpacing: " << ts.letter_spacing << " " <<
-    //"WordSpacing: " << ts.word_spacing << " " <<
-    //"Height: " << ts.height << " " <<
-    //"Locale: " << ts.locale << " " <<
-    //"Background: " << (ts.has_background ? std::to_string(ts.background.getColor()) : "none") << " " <<
-    //"Foreground: " << (ts.has_foreground ? std::to_string(ts.foreground.getColor()) : "none") << " " <<
-    //std::endl;
+    FML_LOG(ERROR) << "TextStyle1: " << std::endl;
+    FML_LOG(ERROR) <<
+    "color: " << ts.color << " " <<
+    "FontWeight: " << (int)ts.font_weight << " " <<
+    "FontFamily: " << (ts.font_families.empty() ? "none" : ts.font_families[0]) << " " <<
+    "FontStyle: " << (int)ts.font_style << " " <<
+    (ts.font_style == txt::FontStyle::normal ? "normal" : "italic") << " " <<
+    "FontSize: " << ts.font_size << " " <<
+    "LetterSpacing: " << ts.letter_spacing << " " <<
+    "WordSpacing: " << ts.word_spacing << " " <<
+    "Height: " << ts.height << " " <<
+    "Locale: " << ts.locale << " " <<
+    "Background: " << (ts.has_background ? std::to_string(ts.background.getColor()) : "none") << " " <<
+    "Foreground: " << (ts.has_foreground ? std::to_string(ts.foreground.getColor()) : "none") << " " <<
+    std::endl;
   }
 
   void print_paragraph_style(const txt::ParagraphStyle& ps) {
@@ -462,10 +462,10 @@ void ParagraphBuilder::pop() {
 
 Dart_Handle ParagraphBuilder::addText(const std::u16string& text) {
 
-  //icu::UnicodeString utf16 = icu::UnicodeString(text.data(), text.size());
-  //std::string str;
-  //utf16.toUTF8String(str);
-  //FML_LOG(ERROR) << "addText(" << str.c_str() << ")" << std::endl;
+  icu::UnicodeString utf16 = icu::UnicodeString(text.data(), text.size());
+  std::string str;
+  utf16.toUTF8String(str);
+  FML_LOG(ERROR) << "addText(" << str.c_str() << ")" << std::endl;
   if (!m_paragraphBuilderImpl->addText(text)) {
     return tonic::ToDart("string is not well-formed UTF-16");
   } else {
