@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "flutter/lib/ui/text/asset_manager_font_provider.h"
+#include "asset_manager_font_provider.h"
 
 #include "flutter/fml/logging.h"
 #include "third_party/skia/include/core/SkData.h"
@@ -116,10 +116,23 @@ SkTypeface* AssetManagerFontStyleSet::matchStyle(const SkFontStyle& pattern) {
   if (assets_.empty())
     return nullptr;
 
-  for (const TypefaceAsset& asset : assets_)
-    if (asset.typeface && asset.typeface->fontStyle() == pattern)
-      return SkRef(asset.typeface.get());
+  for (const TypefaceAsset& asset : assets_) {
 
+    if (asset.typeface) {
+      SkString name;
+      asset.typeface->getFamilyName(&name);
+      FML_LOG(ERROR) << "matchStyle " << name.c_str() << " " <<
+                     (pattern.slant() == SkFontStyle::kUpright_Slant ? "normal" : "italic") << "=" <<
+                     (asset.typeface->fontStyle().slant() == SkFontStyle::kUpright_Slant ? "normal" : "italic") << " " <<
+                     (int)pattern.weight() << "=" << (int)asset.typeface->fontStyle().weight() << " " <<
+                     (int)pattern.width() << "=" <<(int)(int)asset.typeface->fontStyle().width() << std::endl;
+    }
+    if (asset.typeface && asset.typeface->fontStyle() == pattern)
+      FML_LOG(ERROR) << "found " << std::endl;
+      return SkRef(asset.typeface.get());
+  }
+
+  FML_LOG(ERROR) << "not found" << std::endl;
   return SkRef(assets_[0].typeface.get());
 }
 

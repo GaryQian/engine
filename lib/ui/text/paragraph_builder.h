@@ -10,12 +10,13 @@
 #include "flutter/lib/ui/dart_wrapper.h"
 #include "flutter/lib/ui/painting/paint.h"
 #include "flutter/lib/ui/text/paragraph.h"
+
 #include "flutter/third_party/txt/src/txt/paragraph_builder.h"
-#include "third_party/tonic/typed_data/typed_list.h"
+#include "flutter/lib/ui/text/paragraph_builder_impl.h"
 
 namespace tonic {
 class DartLibraryNatives;
-}  // namespace tonic
+}
 
 namespace flutter {
 
@@ -83,7 +84,7 @@ class ParagraphBuilder : public RefCountedDartWrappable<ParagraphBuilder> {
                             const std::u16string& ellipsis,
                             const std::string& locale);
 
-  std::unique_ptr<txt::ParagraphBuilder> m_paragraphBuilder;
+  std::unique_ptr<blink::ParagraphBuilderImpl> m_paragraphBuilderImpl;
 };
 
 }  // namespace flutter

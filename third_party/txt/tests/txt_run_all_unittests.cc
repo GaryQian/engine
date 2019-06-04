@@ -22,6 +22,7 @@
 #include "txt_test_utils.h"
 
 #include <cassert>
+#include <third_party/googletest/googletest/include/gtest/gtest.h>
 
 int main(int argc, char** argv) {
   fml::CommandLine cmd = fml::CommandLineFromArgcArgv(argc, argv);
@@ -39,5 +40,7 @@ int main(int argc, char** argv) {
   fml::icu::InitializeICU("icudtl.dat");
   SkGraphics::Init();
   testing::InitGoogleTest(&argc, argv);
+
+
   return RUN_ALL_TESTS();
 }

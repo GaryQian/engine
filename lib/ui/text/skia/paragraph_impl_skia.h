@@ -1,25 +1,24 @@
-// Copyright 2013 The Flutter Authors. All rights reserved.
+// Copyright 2019 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef FLUTTER_LIB_UI_TEXT_PARAGRAPH_IMPL_TXT_H_
-#define FLUTTER_LIB_UI_TEXT_PARAGRAPH_IMPL_TXT_H_
+#pragma once
 
 #include "flutter/lib/ui/painting/canvas.h"
 #include "flutter/lib/ui/text/paragraph_impl.h"
 #include "flutter/lib/ui/text/text_box.h"
 
-namespace flutter {
+using namespace skia::textlayout;
+namespace blink {
 
-class ParagraphImplTxt : public ParagraphImpl {
+class ParagraphImplSkia : public ParagraphImpl {
  public:
-  ~ParagraphImplTxt() override;
+  ~ParagraphImplSkia() override;
 
-  explicit ParagraphImplTxt(std::unique_ptr<txt::Paragraph> paragraph);
+  explicit ParagraphImplSkia(std::unique_ptr<Paragraph> paragraph);
 
   double width() override;
   double height() override;
-  double longestLine() override;
   double minIntrinsicWidth() override;
   double maxIntrinsicWidth() override;
   double alphabeticBaseline() override;
@@ -34,15 +33,13 @@ class ParagraphImplTxt : public ParagraphImpl {
       unsigned end,
       txt::Paragraph::RectHeightStyle rect_height_style,
       txt::Paragraph::RectWidthStyle rect_width_style) override;
-  std::vector<TextBox> getRectsForPlaceholders() override;
   Dart_Handle getPositionForOffset(double dx, double dy) override;
   Dart_Handle getWordBoundary(unsigned offset) override;
 
  private:
-  std::unique_ptr<txt::Paragraph> m_paragraph;
+  std::unique_ptr<Paragraph> m_paragraph;
   double m_width = -1.0;
 };
 
-}  // namespace flutter
+}
 
-#endif  // FLUTTER_LIB_UI_TEXT_PARAGRAPH_IMPL_TXT_H_

@@ -149,6 +149,9 @@ struct Settings {
       fml::UniqueFD::traits_type::InvalidValue();
   std::string assets_path;
 
+
+  bool enable_skia_shaping = true;
+
   std::string ToString() const;
 };
 
