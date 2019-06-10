@@ -146,8 +146,7 @@ FOR_EACH_BINDING(DART_NATIVE_CALLBACK)
 
 namespace {
   void print_text_style(const txt::TextStyle& ts) {
-    FML_LOG(ERROR) << "TextStyle1: " << std::endl;
-    FML_LOG(ERROR) <<
+    FML_LOG(ERROR) << "txt::TextStyle: " <<
     "color: " << ts.color << " " <<
     "FontWeight: " << (int)ts.font_weight << " " <<
     "FontFamily: " << (ts.font_families.empty() ? "none" : ts.font_families[0]) << " " <<

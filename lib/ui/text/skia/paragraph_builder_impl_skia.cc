@@ -2,9 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include <third_party/skia/modules/skparagraph/include/ParagraphStyle.h>
-#include <third_party/skia/modules/skparagraph/include/ParagraphBuilder.h>
-#include "third_party/skia/modules/skparagraph/src/ParagraphBuilderImpl.h"
+#include "third_party/skia/modules/skparagraph/include/ParagraphStyle.h"
+#include "third_party/skia/modules/skparagraph/include/ParagraphBuilder.h"
 #include <algorithm>
 #include "flutter/lib/ui/text/skia/paragraph_builder_impl_skia.h"
 
@@ -180,21 +179,20 @@ namespace {
   }
 
   void print_text_style(const skt::TextStyle& ts) {
-    //FML_LOG(ERROR) << "TextStyle2: " << std::endl;
-    //FML_LOG(ERROR) <<
-    //"color: " << ts.getColor() << " " <<
-    //"FontWeight: " << (int)ts.getFontStyle().weight() << " " <<
-    //"FontFamily: " << ts.getFirstFontFamily().c_str() << " " <<
-    //"FontStyle: " << (int)ts.getFontStyle().slant() << " " <<
-    //(ts.getFontStyle().slant() == SkFontStyle::Slant::kUpright_Slant ? "normal" : "italic") << " " <<
-    //"FontSize: " << ts.getFontSize() << " " <<
-    //"LetterSpacing: " << ts.getLetterSpacing() << " " <<
-    //"WordSpacing: " << ts.getWordSpacing() << " " <<
-    //"Height: " << ts.getHeight() << " " <<
-    //"Locale: " << ts.getLocale() << " " <<
-    //"Background: " << (ts.hasBackground() ? std::to_string(ts.getBackground().getColor()) : "none") << " " <<
-    //"Foreground: " << (ts.hasForeground() ? std::to_string(ts.getForeground().getColor()) : "none") << " " <<
-    //std::endl;
+    FML_LOG(ERROR) << "skia::TextStyle: " <<
+    "color: " << ts.getColor() << " " <<
+    "FontWeight: " << (int)ts.getFontStyle().weight() << " " <<
+    "FontFamily: " << ts.getFontFamilies().front().c_str() << " " <<
+    "FontStyle: " << (int)ts.getFontStyle().slant() << " " <<
+    (ts.getFontStyle().slant() == SkFontStyle::Slant::kUpright_Slant ? "normal" : "italic") << " " <<
+    "FontSize: " << ts.getFontSize() << " " <<
+    "LetterSpacing: " << ts.getLetterSpacing() << " " <<
+    "WordSpacing: " << ts.getWordSpacing() << " " <<
+    "Height: " << ts.getHeight() << " " <<
+    "Locale: " << ts.getLocale().c_str() << " " <<
+    "Background: " << (ts.hasBackground() ? std::to_string(ts.getBackground().getColor()) : "none") << " " <<
+    "Foreground: " << (ts.hasForeground() ? std::to_string(ts.getForeground().getColor()) : "none") << " " <<
+    std::endl;
   }
 
   void print_paragraph_style(skt::ParagraphStyle ps) {
@@ -214,7 +212,7 @@ namespace {
 
 ParagraphBuilderImplSkia::ParagraphBuilderImplSkia(
     const txt::ParagraphStyle& style, sk_sp<skt::FontCollection> fontCollection)
-  : m_builder(std::make_shared<skt::ParagraphBuilderImpl>(txt_to_skia(style), fontCollection)) {
+  : m_builder(skt::ParagraphBuilder::make(txt_to_skia(style), fontCollection)) {
   print_paragraph_style(txt_to_skia(style));
 }
 

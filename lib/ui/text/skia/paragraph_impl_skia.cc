@@ -51,6 +51,7 @@ bool ParagraphImplSkia::didExceedMaxLines() {
 }
 
 void ParagraphImplSkia::layout(double width) {
+
   m_width = width;
   m_paragraph->layout(width);
 }
@@ -96,11 +97,13 @@ Dart_Handle ParagraphImplSkia::getWordBoundary(unsigned offset) {
 
 double ParagraphImplSkia::longestLine() {
   // TODO: implement
+  FML_LOG(ERROR) << "longestLine" << std::endl;
   return 0;
 }
 
 std::vector<TextBox> ParagraphImplSkia::getRectsForPlaceholders() {
   // TODO: implement
+  FML_LOG(ERROR) << "getRectsForPlaceholders" << std::endl;
   return std::vector<TextBox>();
 }
 

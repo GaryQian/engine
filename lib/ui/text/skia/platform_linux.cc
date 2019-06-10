@@ -14,6 +14,7 @@ std::string GetDefaultSkiaFontFamily() {
 }
 
 sk_sp<SkFontMgr> GetDefaultSkiaFontManager() {
+  FML_LOG(ERROR) << "Default Linux" << std::endl;
   return SkFontMgr_New_Custom_Directory("/usr/share/fonts/");
 }
 

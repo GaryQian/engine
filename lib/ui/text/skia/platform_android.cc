@@ -16,8 +16,9 @@ std::string GetDefaultSkiaFontFamily() {
 }
 
 sk_sp<SkFontMgr> GetDefaultSkiaFontManager() {
-
-  return SkFontMgr_New_Android(NULL);
+  FML_LOG(ERROR) << "Default Android" << std::endl;
+  return SkFontMgr::RefDefault();
+  //return SkFontMgr_New_Android(NULL);
   //return SkFontMgr_New_Custom_Directory("/usr/share/fonts/");
 }
 

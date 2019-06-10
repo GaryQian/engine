@@ -88,13 +88,11 @@ bool Paragraph::didExceedMaxLines() {
 
 void Paragraph::layout(double width) {
   m_paragraphImpl->layout(width);
-/*
-  FML_LOG(ERROR) << "Layout "
+  FML_LOG(ERROR) << "Layout: "
                  << this->width() << " "
                  << this->height() << " "
                  << this->minIntrinsicWidth() << " "
                  << this->maxIntrinsicWidth() << std::endl;
-*/
 }
 
 void Paragraph::paint(Canvas* canvas, double x, double y) {
@@ -107,9 +105,20 @@ std::vector<TextBox> Paragraph::getRectsForRange(unsigned start,
                                                  unsigned end,
                                                  unsigned boxHeightStyle,
                                                  unsigned boxWidthStyle) {
-  return m_paragraphImpl->getRectsForRange(
+  FML_LOG(ERROR) << "getRectsForRange [" << start << ":" << end << ")" << std::endl;
+  auto result = m_paragraphImpl->getRectsForRange(
       start, end, static_cast<txt::Paragraph::RectHeightStyle>(boxHeightStyle),
       static_cast<txt::Paragraph::RectWidthStyle>(boxWidthStyle));
+  if (result.empty()) {
+    FML_LOG(ERROR) << "getRectsForRange []" << std::endl;
+  } else {
+    for (auto& r : result) {
+      FML_LOG(ERROR) << "getRectsForRange [" << r.rect.fLeft << ":"
+                     << r.rect.fRight << " * " << r.rect.fTop << ":"
+                     << r.rect.fBottom << "]" << std::endl;
+    }
+  }
+  return result;
 }
 
 std::vector<TextBox> Paragraph::getRectsForPlaceholders() {

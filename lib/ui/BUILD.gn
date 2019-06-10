@@ -119,7 +119,7 @@ source_set("ui") {
 
   sources += [ "text/skia/platform.h" ]
   if (is_mac || is_ios) {
-    sources += [ "text/skia/platform_mac.mm" ]
+    sources += [ "text/skia/platform_mac.cc" ]
   } else if (is_android) {
     sources += [ "text/skia/platform_android.cc" ]
   } else if (is_linux) {

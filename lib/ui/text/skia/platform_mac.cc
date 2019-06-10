@@ -26,6 +26,7 @@ std::string GetDefaultSkiaFontFamily() {
 }
 
 sk_sp<SkFontMgr> GetDefaultSkiaFontManager() {
+  FML_LOG(ERROR) << "Default Mac" << std::endl;
   return SkFontMgr::RefDefault();
 }
 

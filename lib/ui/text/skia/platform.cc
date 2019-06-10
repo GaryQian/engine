@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 #include "platform.h"
+#include "flutter/fml/logging.h"
 
 namespace flutter {
 
@@ -11,6 +12,7 @@ std::string GetDefaultFontFamily() {
 }
 
 sk_sp<SkFontMgr> GetDefaultFontManager() {
+  FML_LOG(ERROR) << "Default Default" << std::endl;
   return SkFontMgr::RefDefault();
 }
 

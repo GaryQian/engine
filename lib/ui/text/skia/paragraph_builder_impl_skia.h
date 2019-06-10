@@ -8,12 +8,13 @@
 #include "flutter/lib/ui/dart_wrapper.h"
 #include "flutter/lib/ui/painting/paint.h"
 #include "flutter/lib/ui/text/paragraph.h"
-#include "flutter/lib/ui/text/paragraph_builder_impl.h"
+#include "flutter/lib/ui/text/paragraph_builder.h"
 #include "third_party/tonic/typed_data/typed_list.h"
+
 
 namespace skia {
   namespace textlayout {
-    class ParagraphBuilderImpl;
+    class ParagraphBuilder;
   }
 }
 
@@ -38,7 +39,7 @@ class ParagraphBuilderImplSkia : public ParagraphBuilderImpl {
   fml::RefPtr<Paragraph> build() override;
 
  private:
-  std::shared_ptr<skia::textlayout::ParagraphBuilderImpl> m_builder;
+  std::shared_ptr<skia::textlayout::ParagraphBuilder> m_builder;
 
 };
 
