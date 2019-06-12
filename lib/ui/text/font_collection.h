@@ -7,27 +7,36 @@
 
 #include <memory>
 #include <vector>
+#include <flutter/lib/ui/text/skia/font_collection_impl_skia.h>
 
+#include "third_party/skia/modules/skparagraph/include/FontCollection.h"
+#include "txt/font_collection.h"
+#include "flutter/lib/ui/text/font_collection_impl.h"
 #include "flutter/assets/asset_manager.h"
 #include "flutter/fml/macros.h"
 #include "flutter/fml/memory/ref_ptr.h"
-#include "txt/font_collection.h"
 
 namespace tonic {
 class DartLibraryNatives;
-}  // namespace tonic
+} // namespace tonic
 
 namespace flutter {
 
 class FontCollection {
  public:
-  FontCollection();
 
-  ~FontCollection();
+  FontCollection() {
+     m_fontCollectionImpl = nullptr;
+  }
 
-  static void RegisterNatives(tonic::DartLibraryNatives* natives);
+  void SetImplementation(bool skia) {
+    m_skia = skia;
+    m_fontCollectionImpl = skia
+        ? flutter::FontCollectionImpl::create(true)
+        : flutter::FontCollectionImpl::create(false);
+  }
 
-  std::shared_ptr<txt::FontCollection> GetFontCollection() const;
+  ~FontCollection() = default;
 
   void RegisterFonts(std::shared_ptr<AssetManager> asset_manager);
 
@@ -37,9 +46,22 @@ class FontCollection {
                         int length,
                         std::string family_name);
 
+  sk_sp<skia::textlayout::FontCollection> getSkiaFontCollection() {
+    return m_fontCollectionImpl->getSkiaFontCollection();
+  }
+
+  std::shared_ptr<txt::FontCollection> getTxtFontCollection() {
+    return m_fontCollectionImpl->getTxtFontCollection();
+  }
+
+  bool skiaShaperEnabled() { return m_skia; }
+
+  static void RegisterNatives(tonic::DartLibraryNatives* natives);
+
  private:
-  std::shared_ptr<txt::FontCollection> collection_;
-  sk_sp<txt::DynamicFontManager> dynamic_font_manager_;
+
+  std::unique_ptr<flutter::FontCollectionImpl> m_fontCollectionImpl;
+  bool m_skia;
 
   FML_DISALLOW_COPY_AND_ASSIGN(FontCollection);
 };

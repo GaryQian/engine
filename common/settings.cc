@@ -55,6 +55,7 @@ std::string Settings::ToString() const {
   stream << "assets_path: " << assets_path << std::endl;
   stream << "frame_rasterized_callback set: " << !!frame_rasterized_callback
          << std::endl;
+  stream << "enable_skia_shaping: " << enable_skia_shaping << std::endl;
   return stream.str();
 }
 

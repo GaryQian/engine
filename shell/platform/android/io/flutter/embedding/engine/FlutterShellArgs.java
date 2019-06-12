@@ -39,6 +39,8 @@ public class FlutterShellArgs {
   public static final String ARG_SKIA_DETERMINISTIC_RENDERING = "--skia-deterministic-rendering";
   public static final String ARG_KEY_TRACE_SKIA = "trace-skia";
   public static final String ARG_TRACE_SKIA = "--trace-skia";
+  public static final String ARG_KEY_ENABLE_SKIA_SHAPER = "enable-skia-shaper";
+  public static final String ARG_ENABLE_SKIA_SHAPER = "--enable-skia-shaper";
   public static final String ARG_KEY_DUMP_SHADER_SKP_ON_SHADER_COMPILATION = "dump-skp-on-shader-compilation";
   public static final String ARG_DUMP_SHADER_SKP_ON_SHADER_COMPILATION = "--dump-skp-on-shader-compilation";
   public static final String ARG_KEY_VERBOSE_LOGGING = "verbose-logging";
@@ -72,6 +74,9 @@ public class FlutterShellArgs {
     }
     if (intent.getBooleanExtra(ARG_KEY_SKIA_DETERMINISTIC_RENDERING, false)) {
       args.add(ARG_SKIA_DETERMINISTIC_RENDERING);
+    }
+    if (intent.getBooleanExtra(ARG_KEY_ENABLE_SKIA_SHAPER, false)) {
+      args.add(ARG_ENABLE_SKIA_SHAPER);
     }
     if (intent.getBooleanExtra(ARG_KEY_TRACE_SKIA, false)) {
       args.add(ARG_TRACE_SKIA);

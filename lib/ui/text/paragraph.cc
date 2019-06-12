@@ -41,6 +41,10 @@ Paragraph::Paragraph(std::unique_ptr<txt::Paragraph> paragraph)
     : m_paragraphImpl(
           std::make_unique<ParagraphImplTxt>(std::move(paragraph))) {}
 
+Paragraph::Paragraph(std::unique_ptr<skia::textlayout::Paragraph> paragraph)
+    : m_paragraphImpl(
+        std::make_unique<ParagraphImplSkia>(std::move(paragraph))) {}
+
 Paragraph::~Paragraph() = default;
 
 size_t Paragraph::GetAllocationSize() {
@@ -84,9 +88,16 @@ bool Paragraph::didExceedMaxLines() {
 
 void Paragraph::layout(double width) {
   m_paragraphImpl->layout(width);
+  FML_LOG(ERROR) << "Layout: "
+                 << this->width() << " "
+                 << this->height() << " "
+                 << this->minIntrinsicWidth() << " "
+                 << this->maxIntrinsicWidth() << std::endl;
 }
 
 void Paragraph::paint(Canvas* canvas, double x, double y) {
+
+  //FML_LOG(ERROR) << "Paint " << x << "," << y << std:: endl;
   m_paragraphImpl->paint(canvas, x, y);
 }
 
@@ -94,20 +105,34 @@ std::vector<TextBox> Paragraph::getRectsForRange(unsigned start,
                                                  unsigned end,
                                                  unsigned boxHeightStyle,
                                                  unsigned boxWidthStyle) {
-  return m_paragraphImpl->getRectsForRange(
+  FML_LOG(ERROR) << "getRectsForRange [" << start << ":" << end << ")" << std::endl;
+  auto result = m_paragraphImpl->getRectsForRange(
       start, end, static_cast<txt::Paragraph::RectHeightStyle>(boxHeightStyle),
       static_cast<txt::Paragraph::RectWidthStyle>(boxWidthStyle));
+  if (result.empty()) {
+    FML_LOG(ERROR) << "getRectsForRange []" << std::endl;
+  } else {
+    for (auto& r : result) {
+      FML_LOG(ERROR) << "getRectsForRange [" << r.rect.fLeft << ":"
+                     << r.rect.fRight << " * " << r.rect.fTop << ":"
+                     << r.rect.fBottom << "]" << std::endl;
+    }
+  }
+  return result;
 }
 
 std::vector<TextBox> Paragraph::getRectsForPlaceholders() {
+  FML_LOG(ERROR) << "getRectsForPlaceholders" << std::endl;
   return m_paragraphImpl->getRectsForPlaceholders();
 }
 
 Dart_Handle Paragraph::getPositionForOffset(double dx, double dy) {
+  FML_LOG(ERROR) << "getRectsForPlaceholders(" << dx << "," << dy << ")" << std::endl;
   return m_paragraphImpl->getPositionForOffset(dx, dy);
 }
 
 Dart_Handle Paragraph::getWordBoundary(unsigned offset) {
+  FML_LOG(ERROR) << "getWordBoundary(" << offset << ")" << std::endl;
   return m_paragraphImpl->getWordBoundary(offset);
 }
 

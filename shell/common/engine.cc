@@ -90,7 +90,8 @@ bool Engine::UpdateAssetManager(
     return false;
   }
 
-  // Using libTXT as the text engine.
+  // Using libTXT or Skia as the text engine.
+  font_collection_.SetImplementation(settings_.enable_skia_shaping);
   font_collection_.RegisterFonts(asset_manager_);
 
   if (settings_.use_test_fonts) {

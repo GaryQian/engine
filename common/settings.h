@@ -172,6 +172,8 @@ struct Settings {
   // soon as a frame is rasterized.
   FrameRasterizedCallback frame_rasterized_callback;
 
+  bool enable_skia_shaping = true;
+
   std::string ToString() const;
 };
 
