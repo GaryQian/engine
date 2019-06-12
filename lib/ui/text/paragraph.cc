@@ -122,14 +122,17 @@ std::vector<TextBox> Paragraph::getRectsForRange(unsigned start,
 }
 
 std::vector<TextBox> Paragraph::getRectsForPlaceholders() {
+  FML_LOG(ERROR) << "getRectsForPlaceholders" << std::endl;
   return m_paragraphImpl->getRectsForPlaceholders();
 }
 
 Dart_Handle Paragraph::getPositionForOffset(double dx, double dy) {
+  FML_LOG(ERROR) << "getRectsForPlaceholders(" << dx << "," << dy << ")" << std::endl;
   return m_paragraphImpl->getPositionForOffset(dx, dy);
 }
 
 Dart_Handle Paragraph::getWordBoundary(unsigned offset) {
+  FML_LOG(ERROR) << "getWordBoundary(" << offset << ")" << std::endl;
   return m_paragraphImpl->getWordBoundary(offset);
 }
 

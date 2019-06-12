@@ -1211,6 +1211,7 @@ sk_sp<SkTypeface> Paragraph::GetDefaultSkiaTypeface(const TextStyle& style) {
 // The x,y coordinates will be the very top left corner of the rendered
 // paragraph.
 void Paragraph::Paint(SkCanvas* canvas, double x, double y) {
+  //FML_LOG(ERROR) << "Paint(" << x << "," << y << ")" << std::endl;
   SkPoint base_offset = SkPoint::Make(x, y);
   SkPaint paint;
   // Paint the background first before painting any text to prevent
