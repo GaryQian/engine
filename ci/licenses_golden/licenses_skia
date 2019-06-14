@@ -1,4 +1,4 @@
-Signature: 4b3498d1b3b1243b35321866bdb0ed73
+Signature: 31f0f0d391c37f05d0a0b11f2e87f26e
 
 UNUSED LICENSES:
 
@@ -5329,8 +5329,10 @@ LIBRARY: skia
 ORIGIN: ../../../third_party/skia/bench/SkSLBench.cpp + ../../../third_party/skia/LICENSE
 TYPE: LicenseType.bsd
 FILE: ../../../third_party/skia/bench/SkSLBench.cpp
+FILE: ../../../third_party/skia/bench/SkSLInterpreterBench.cpp
 FILE: ../../../third_party/skia/experimental/wasm-skp-debugger/debugger_bindings.cpp
 FILE: ../../../third_party/skia/gm/asyncrescaleandread.cpp
+FILE: ../../../third_party/skia/gm/crbug_908646.cpp
 FILE: ../../../third_party/skia/gm/crbug_946965.cpp
 FILE: ../../../third_party/skia/gm/runtimecolorfilter.cpp
 FILE: ../../../third_party/skia/include/gpu/gl/GrGLAssembleHelpers.h
