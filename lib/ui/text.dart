@@ -1570,14 +1570,30 @@ enum PlaceholderAlignment {
 }
 
 class LineMetrics {
-  // The following fields are used in the layout process itself.
+
+  @pragma('vm:entry-point')
+  LineMetrics._(
+    this.startIndex,
+    this.endIndex,
+    this.endExcludingWhitespace,
+    this.endIncludingNewline,
+    this.hardBreak,
+    this.ascent,
+    this.descent,
+    this.unscaledAscent,
+    this.height,
+    this.width,
+    this.left,
+    this.baseline,
+    this.lineNumber,
+  );
 
   // The indexes in the text buffer the line begins and ends.
-  int start_index = 0;
-  int end_index = 0;
-  int end_excluding_whitespace = 0;
-  int end_including_newline = 0;
-  bool hard_break = false;
+  int startIndex = 0;
+  int endIndex = 0;
+  int endExcludingWhitespace = 0;
+  int endIncludingNewline = 0;
+  bool hardBreak = false;
 
   // The following fields are tracked after or during layout to provide to
   // the user as well as for computing bounding boxes.
@@ -1591,7 +1607,7 @@ class LineMetrics {
   // are the cumulative metrics for the entire line.
   double ascent = 0.0;
   double descent = 0.0;
-  double unscaled_ascent = 0.0;
+  double unscaledAscent = 0.0;
   // Height of the line.
   double height = 0.0;
   // Width of the line.
@@ -1602,7 +1618,7 @@ class LineMetrics {
   // The y position of the baseline for this line from the top of the paragraph.
   double baseline = 0.0;
   // Zero indexed line number.
-  int line_number = 0;
+  int lineNumber = 0;
 
   // Mapping between text index ranges and the FontMetrics associated with
   // them. The first run will be keyed under start_index. The metrics here
@@ -1624,7 +1640,25 @@ class LineMetrics {
 }
 
 class RunMetrics {
-  TextStyle textStyle;
+  @pragma('vm:entry-point')
+  RunMetrics._(
+    this.top,
+    this.ascent,
+    this.descent,
+    this.bottom,
+    this.leading,
+    this.avgCharWidth,
+    this.maxCharWidth,
+    this.xMin,
+    this.xMax,
+    this.xHeight,
+    this.capHeight,
+    this.underlineThickness,
+    this.underlinePosition,
+    this.strikeoutThickness,
+    this.strikeoutPosition,
+  );
+
   double top;                 // distance to reserve above baseline
   double ascent;              // distance to reserve below baseline
   double descent;             // extent below baseline
