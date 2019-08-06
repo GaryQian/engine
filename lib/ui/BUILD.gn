@@ -88,6 +88,8 @@ source_set("ui") {
     "text/paragraph_impl.h",
     "text/paragraph_impl_txt.cc",
     "text/paragraph_impl_txt.h",
+    "text/run_metrics.cc",
+    "text/run_metrics.h",
     "text/text_box.cc",
     "text/text_box.h",
     "ui_dart_state.cc",

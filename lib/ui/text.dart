@@ -1569,6 +1569,79 @@ enum PlaceholderAlignment {
   middle,
 }
 
+class LineMetrics {
+  // The following fields are used in the layout process itself.
+
+  // The indexes in the text buffer the line begins and ends.
+  int start_index = 0;
+  int end_index = 0;
+  int end_excluding_whitespace = 0;
+  int end_including_newline = 0;
+  bool hard_break = false;
+
+  // The following fields are tracked after or during layout to provide to
+  // the user as well as for computing bounding boxes.
+
+  // The final computed ascent and descent for the line. This can be impacted by
+  // the strut, height, scaling, as well as outlying runs that are very tall.
+  //
+  // The top edge is `baseline - ascent` and the bottom edge is `baseline +
+  // descent`. Ascent and descent are provided as positive numbers. Raw numbers
+  // for specific runs of text can be obtained in run_metrics_map. These values
+  // are the cumulative metrics for the entire line.
+  double ascent = 0.0;
+  double descent = 0.0;
+  double unscaled_ascent = 0.0;
+  // Height of the line.
+  double height = 0.0;
+  // Width of the line.
+  double width = 0.0;
+  // The left edge of the line. The right edge can be obtained with `left +
+  // width`
+  double left = 0.0;
+  // The y position of the baseline for this line from the top of the paragraph.
+  double baseline = 0.0;
+  // Zero indexed line number.
+  int line_number = 0;
+
+  // Mapping between text index ranges and the FontMetrics associated with
+  // them. The first run will be keyed under start_index. The metrics here
+  // are before layout and are the base values we calculate from.
+  // std::map<size_t, RunMetrics> run_metrics;
+
+  // LineMetrics();
+
+  // LineMetrics(size_t start,
+  //             size_t end,
+  //             size_t end_excluding_whitespace,
+  //             size_t end_including_newline,
+  //             bool hard_break)
+  //     : start_index(start),
+  //       end_index(end),
+  //       end_excluding_whitespace(end_excluding_whitespace),
+  //       end_including_newline(end_including_newline),
+  //       hard_break(hard_break) {}
+}
+
+class RunMetrics {
+  TextStyle textStyle;
+  double top;                 // distance to reserve above baseline
+  double ascent;              // distance to reserve below baseline
+  double descent;             // extent below baseline
+  double bottom;              // extent below baseline
+  double leading;             // distance to add between lines
+  double avgCharWidth;        // average character width
+  double maxCharWidth;        // maximum character width
+  double xMin;                // minimum x
+  double xMax;                // maximum x
+  double xHeight;             // height of lower-case 'x'
+  double capHeight;           // height of an upper-case letter
+  double underlineThickness;  // underline thickness
+  double underlinePosition;   // underline position relative to baseline
+  double strikeoutThickness;  // strikeout thickness
+  double strikeoutPosition;   // strikeout position relative to baseline
+}
+
 /// A paragraph of text.
 ///
 /// A paragraph retains the size and position of each glyph in the text and can
