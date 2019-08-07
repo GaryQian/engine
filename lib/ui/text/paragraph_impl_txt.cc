@@ -107,4 +107,16 @@ Dart_Handle ParagraphImplTxt::getWordBoundary(unsigned offset) {
   return result;
 }
 
+std::vector<LineMetrics> ParagraphImplTxt::getLineMetrics() {
+  std::vector<LineMetrics> result;
+  double status;
+  std::vector<txt::LineMetrics> metrics = m_paragraph->GetLineMetrics();
+  for (txt::LineMetrics& line : metrics) {
+    // result.emplace_back();
+    status = line.left;
+    // line = nullptr;
+  }
+  return result;
+}
+
 }  // namespace flutter

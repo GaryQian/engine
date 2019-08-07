@@ -6,6 +6,7 @@
 #define FLUTTER_LIB_UI_TEXT_PARAGRAPH_IMPL_TXT_H_
 
 #include "flutter/lib/ui/painting/canvas.h"
+#include "flutter/lib/ui/text/line_metrics.h"
 #include "flutter/lib/ui/text/paragraph_impl.h"
 #include "flutter/lib/ui/text/text_box.h"
 
@@ -37,6 +38,7 @@ class ParagraphImplTxt : public ParagraphImpl {
   std::vector<TextBox> getRectsForPlaceholders() override;
   Dart_Handle getPositionForOffset(double dx, double dy) override;
   Dart_Handle getWordBoundary(unsigned offset) override;
+  std::vector<LineMetrics> getLineMetrics() override;
 
  private:
   std::unique_ptr<txt::Paragraph> m_paragraph;

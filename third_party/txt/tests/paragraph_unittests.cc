@@ -34,6 +34,43 @@ namespace txt {
 
 using ParagraphTest = RenderTest;
 
+TEST_F(ParagraphTest, SimpleParagraph) {
+  const char* text = "Hello World Text Dialog";
+  auto icu_text = icu::UnicodeString::fromUTF8(text);
+  std::u16string u16_text(icu_text.getBuffer(),
+                          icu_text.getBuffer() + icu_text.length());
+
+  txt::ParagraphStyle paragraph_style;
+  txt::ParagraphBuilderTxt builder(paragraph_style, GetTestFontCollection());
+
+  txt::TextStyle text_style;
+  // We must supply a font here, as the default is Arial, and we do not
+  // include Arial in our test fonts as it is proprietary. We want it to
+  // be Arial default though as it is one of the most common fonts on host
+  // platforms. On real devices/apps, Arial should be able to be resolved.
+  text_style.font_families = std::vector<std::string>(1, "Roboto");
+  text_style.color = SK_ColorBLACK;
+  builder.PushStyle(text_style);
+  builder.AddText(u16_text);
+
+  builder.Pop();
+
+  auto paragraph = BuildParagraph(builder);
+  paragraph->Layout(GetTestCanvasWidth());
+
+  paragraph->Paint(GetCanvas(), 10.0, 15.0);
+
+  ASSERT_EQ(paragraph->text_.size(), std::string{text}.length());
+  for (size_t i = 0; i < u16_text.length(); i++) {
+    ASSERT_EQ(paragraph->text_[i], u16_text[i]);
+  }
+  ASSERT_EQ(paragraph->runs_.runs_.size(), 1ull);
+  ASSERT_EQ(paragraph->runs_.styles_.size(), 2ull);
+  ASSERT_TRUE(paragraph->runs_.styles_[1].equals(text_style));
+  ASSERT_EQ(paragraph->records_[0].style().color, text_style.color);
+  ASSERT_TRUE(Snapshot());
+}
+
 TEST_F(ParagraphTest, LineMetricsParagraph1) {
   const char* text = "Hello! What is going on?\nSecond line \nthirdline";
   auto icu_text = icu::UnicodeString::fromUTF8(text);
@@ -375,43 +412,6 @@ TEST_F(ParagraphTest, LineMetricsParagraph2) {
                       ->second.GetFontMetrics()
                       .fDescent,
                   7.6799998);
-}
-
-TEST_F(ParagraphTest, SimpleParagraph) {
-  const char* text = "Hello World Text Dialog";
-  auto icu_text = icu::UnicodeString::fromUTF8(text);
-  std::u16string u16_text(icu_text.getBuffer(),
-                          icu_text.getBuffer() + icu_text.length());
-
-  txt::ParagraphStyle paragraph_style;
-  txt::ParagraphBuilderTxt builder(paragraph_style, GetTestFontCollection());
-
-  txt::TextStyle text_style;
-  // We must supply a font here, as the default is Arial, and we do not
-  // include Arial in our test fonts as it is proprietary. We want it to
-  // be Arial default though as it is one of the most common fonts on host
-  // platforms. On real devices/apps, Arial should be able to be resolved.
-  text_style.font_families = std::vector<std::string>(1, "Roboto");
-  text_style.color = SK_ColorBLACK;
-  builder.PushStyle(text_style);
-  builder.AddText(u16_text);
-
-  builder.Pop();
-
-  auto paragraph = BuildParagraph(builder);
-  paragraph->Layout(GetTestCanvasWidth());
-
-  paragraph->Paint(GetCanvas(), 10.0, 15.0);
-
-  ASSERT_EQ(paragraph->text_.size(), std::string{text}.length());
-  for (size_t i = 0; i < u16_text.length(); i++) {
-    ASSERT_EQ(paragraph->text_[i], u16_text[i]);
-  }
-  ASSERT_EQ(paragraph->runs_.runs_.size(), 1ull);
-  ASSERT_EQ(paragraph->runs_.styles_.size(), 2ull);
-  ASSERT_TRUE(paragraph->runs_.styles_[1].equals(text_style));
-  ASSERT_EQ(paragraph->records_[0].style().color, text_style.color);
-  ASSERT_TRUE(Snapshot());
 }
 
 TEST_F(ParagraphTest, DISABLE_ON_WINDOWS(InlinePlaceholderParagraph)) {

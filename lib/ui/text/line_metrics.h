@@ -43,6 +43,8 @@ struct LineMetrics {
   std::vector<RunMetrics> run_metrics;
   std::vector<size_t> run_metrics_indexes;
 
+  LineMetrics();
+
   LineMetrics(size_t start_index,
               size_t end_index,
               size_t end_excluding_whitespace,

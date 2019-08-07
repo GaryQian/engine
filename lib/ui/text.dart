@@ -1569,6 +1569,7 @@ enum PlaceholderAlignment {
   middle,
 }
 
+/// Data class that holds the metrics for a single line in the [Paragraph].
 class LineMetrics {
 
   @pragma('vm:entry-point')
@@ -1588,21 +1589,18 @@ class LineMetrics {
     this.lineNumber,
     List<RunMetrics> rMetrics,
     List<int> rMetricsIndexes,
-  ) {
+  ) : runMetrics = Map() {
     for (int i = 0; i < rMetrics.length; ++i) {
       runMetrics[rMetricsIndexes[i]] = rMetrics[i];
     }
   }
 
   // The indexes in the text buffer the line begins and ends.
-  int startIndex = 0;
-  int endIndex = 0;
-  int endExcludingWhitespace = 0;
-  int endIncludingNewline = 0;
-  bool hardBreak = false;
-
-  // The following fields are tracked after or during layout to provide to
-  // the user as well as for computing bounding boxes.
+  final int startIndex;
+  final int endIndex;
+  final int endExcludingWhitespace;
+  final int endIncludingNewline;
+  final bool hardBreak;
 
   // The final computed ascent and descent for the line. This can be impacted by
   // the strut, height, scaling, as well as outlying runs that are very tall.
@@ -1611,40 +1609,29 @@ class LineMetrics {
   // descent`. Ascent and descent are provided as positive numbers. Raw numbers
   // for specific runs of text can be obtained in run_metrics_map. These values
   // are the cumulative metrics for the entire line.
-  double ascent = 0.0;
-  double descent = 0.0;
-  double unscaledAscent = 0.0;
+  final double ascent;
+  final double descent;
+  final double unscaledAscent;
   // Height of the line.
-  double height = 0.0;
+  final double height;
   // Width of the line.
-  double width = 0.0;
+  final double width;
   // The left edge of the line. The right edge can be obtained with `left +
   // width`
-  double left = 0.0;
+  final double left;
   // The y position of the baseline for this line from the top of the paragraph.
-  double baseline = 0.0;
+  final double baseline;
   // Zero indexed line number.
-  int lineNumber = 0;
+  final int lineNumber;
 
   // Mapping between text index ranges and the FontMetrics associated with
   // them. The first run will be keyed under start_index. The metrics here
   // are before layout and are the base values we calculate from.
-  Map<int, RunMetrics> runMetrics;
-
-  // LineMetrics();
-
-  // LineMetrics(size_t start,
-  //             size_t end,
-  //             size_t end_excluding_whitespace,
-  //             size_t end_including_newline,
-  //             bool hard_break)
-  //     : start_index(start),
-  //       end_index(end),
-  //       end_excluding_whitespace(end_excluding_whitespace),
-  //       end_including_newline(end_including_newline),
-  //       hard_break(hard_break) {}
+  final Map<int, RunMetrics> runMetrics;
 }
 
+
+/// Data class that tracks the font metrics for a particular text buffer index.
 class RunMetrics {
   @pragma('vm:entry-point')
   RunMetrics._(
@@ -1797,6 +1784,8 @@ class Paragraph extends NativeFieldWrapperClass2 {
   // in the C++ code. If we straighten out the C++ dependencies, we can remove
   // this indirection.
   void _paint(Canvas canvas, double x, double y) native 'Paragraph_paint';
+
+  List<LineMetrics> getLineMetrics() native 'Paragraph_getLineMetrics';
 }
 
 /// Builds a [Paragraph] containing text with the given styling information.

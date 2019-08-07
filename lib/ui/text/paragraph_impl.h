@@ -6,6 +6,7 @@
 #define FLUTTER_LIB_UI_TEXT_PARAGRAPH_IMPL_H_
 
 #include "flutter/lib/ui/painting/canvas.h"
+#include "flutter/lib/ui/text/line_metrics.h"
 #include "flutter/lib/ui/text/text_box.h"
 #include "flutter/third_party/txt/src/txt/paragraph.h"
 
@@ -46,6 +47,8 @@ class ParagraphImpl {
   virtual Dart_Handle getPositionForOffset(double dx, double dy) = 0;
 
   virtual Dart_Handle getWordBoundary(unsigned offset) = 0;
+
+  virtual std::vector<LineMetrics> getLineMetrics() = 0;
 };
 
 }  // namespace flutter
