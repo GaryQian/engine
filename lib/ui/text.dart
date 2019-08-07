@@ -1586,7 +1586,13 @@ class LineMetrics {
     this.left,
     this.baseline,
     this.lineNumber,
-  );
+    List<RunMetrics> rMetrics,
+    List<int> rMetricsIndexes,
+  ) {
+    for (int i = 0; i < rMetrics.length; ++i) {
+      runMetrics[rMetricsIndexes[i]] = rMetrics[i];
+    }
+  }
 
   // The indexes in the text buffer the line begins and ends.
   int startIndex = 0;
@@ -1623,7 +1629,7 @@ class LineMetrics {
   // Mapping between text index ranges and the FontMetrics associated with
   // them. The first run will be keyed under start_index. The metrics here
   // are before layout and are the base values we calculate from.
-  // std::map<size_t, RunMetrics> run_metrics;
+  Map<int, RunMetrics> runMetrics;
 
   // LineMetrics();
 

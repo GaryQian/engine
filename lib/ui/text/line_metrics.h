@@ -5,6 +5,7 @@
 #ifndef FLUTTER_LIB_UI_TEXT_LINE_METRICS_H_
 #define FLUTTER_LIB_UI_TEXT_LINE_METRICS_H_
 
+#include "flutter/lib/ui/text/run_metrics.h"
 #include "third_party/dart/runtime/include/dart_api.h"
 #include "third_party/tonic/converter/dart_converter.h"
 
@@ -39,6 +40,9 @@ struct LineMetrics {
   // Zero indexed line number.
   size_t line_number = 0;
 
+  std::vector<RunMetrics> run_metrics;
+  std::vector<size_t> run_metrics_indexes;
+
   LineMetrics(size_t start_index,
               size_t end_index,
               size_t end_excluding_whitespace,
@@ -65,19 +69,20 @@ struct LineMetrics {
         left(left),
         baseline(baseline),
         line_number(line_number) {}
+};
 
 }  // namespace flutter
 
 namespace tonic {
-  template <>
-  struct DartConverter<flutter::LineMetrics> {
-    static Dart_Handle ToDart(const flutter::LineMetrics& val);
-  };
+template <>
+struct DartConverter<flutter::LineMetrics> {
+  static Dart_Handle ToDart(const flutter::LineMetrics& val);
+};
 
-  template <>
-  struct DartListFactory<flutter::LineMetrics> {
-    static Dart_Handle NewList(intptr_t length);
-  };
+template <>
+struct DartListFactory<flutter::LineMetrics> {
+  static Dart_Handle NewList(intptr_t length);
+};
 
 }  // namespace tonic
 
