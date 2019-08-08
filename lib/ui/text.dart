@@ -1625,25 +1625,25 @@ class LineMetrics {
   // for specific runs of text can be obtained in run_metrics_map. These values
   // are the cumulative metrics for the entire line.
 
-  /// The rise from the baseline as calculated from the font and style for this line.
+  /// The rise from the [baseline] as calculated from the font and style for this line.
   ///
-  /// Ascent is provided as a positive value, even though it is typically defined in
+  /// The [ascent] is provided as a positive value, even though it is typically defined in
   /// fonts as negative. This is to ensure the signage of operations with these
   /// metrics directly reflects the intended signage of the value. For example,
   /// the y-coordinate of the top edge of the line is 'baseline - ascent`.
   final double ascent;
 
-  /// The drop from the baseline as calculated from the font and style for this line.
+  /// The drop from the [baseline] as calculated from the font and style for this line.
   ///
   /// The y-coordinate of the bottom edge of the line is 'baseline + descent`.
   final double descent;
 
-  /// The rise from the baseline as calculated from the font and style for this line
+  /// The rise from the [baseline] as calculated from the font and style for this line
   /// ignoring the text scale factor.
   ///
-  /// Ascent is provided as a positive value, even though it is typically defined in
-  /// fonts as negative. This is to ensure the signage of operations with these
-  /// metrics directly reflects the intended signage of the value. For example,
+  /// The [unscaledAscent] is provided as a positive value, even though it is typically
+  /// defined in fonts as negative. This is to ensure the signage of operations with
+  /// these metrics directly reflects the intended signage of the value. For example,
   /// the y-coordinate of the top edge of the line is 'baseline - ascent`.
   final double unscaledAscent;
 
@@ -1678,12 +1678,13 @@ class LineMetrics {
   /// key, the [startIndex] acts as the previous key.
   ///
   /// The metrics here are pre-layout values and are the base font metrics we
-  /// compute the rest of the paragraph from.
+  /// compute the rest of the paragraph from. These metrics do not account for
+  /// modifiers such as [StrutStyle] or `textScaleFactor`.
   final Map<int, RunMetrics> runMetrics;
 }
 
 
-/// Data class that tracks the font metrics for a particular text buffer index.
+/// Data class that tracks the raw font metrics for a particular text buffer index.
 class RunMetrics {
   @pragma('vm:entry-point')
   RunMetrics._(
@@ -1703,6 +1704,8 @@ class RunMetrics {
     this.strikeoutThickness,
     this.strikeoutPosition,
   );
+
+  // TODO(garyq): Include the TextStyle here too.
 
   /// Extent above baseline.
   final double top;    
