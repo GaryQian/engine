@@ -43,9 +43,6 @@ struct LineMetrics {
 
   std::map<size_t, txt::RunMetrics> run_metrics;
 
-  // std::vector<RunMetrics> run_metrics;
-  // std::vector<size_t> run_metrics_indexes;
-
   LineMetrics();
 
   LineMetrics(size_t start_index,
@@ -62,8 +59,6 @@ struct LineMetrics {
               double baseline,
               size_t line_number,
               std::map<size_t, txt::RunMetrics>& metrics)
-      //     std::vector<RunMetrics>& metrics,
-      // std::vector<size_t>& metrics_indexes)
       : start_index(start_index),
         end_index(end_index),
         end_excluding_whitespace(end_excluding_whitespace),
@@ -78,8 +73,6 @@ struct LineMetrics {
         baseline(baseline),
         line_number(line_number),
         run_metrics(metrics) {}
-  // run_metrics(metrics),
-  // run_metrics_indexes(metrics_indexes) {}
 };
 
 }  // namespace flutter

@@ -52,21 +52,22 @@ Dart_Handle DartConverter<flutter::LineMetrics>::ToDart(
     // clang-format on
   }
 
-  Dart_Handle argv[argc] = {tonic::ToDart(val.start_index),
-                            tonic::ToDart(val.end_index),
-                            tonic::ToDart(val.end_excluding_whitespace),
-                            tonic::ToDart(val.end_including_newline),
-                            tonic::ToDart(val.hard_break),
-                            tonic::ToDart(val.ascent),
-                            tonic::ToDart(val.descent),
-                            tonic::ToDart(val.unscaled_ascent),
-                            tonic::ToDart(val.height),
-                            tonic::ToDart(val.width),
-                            tonic::ToDart(val.left),
-                            tonic::ToDart(val.baseline),
-                            tonic::ToDart(val.line_number),
-                            tonic::ToDart(metrics),
-                            tonic::ToDart(indexes)};
+  Dart_Handle argv[argc] = {
+      tonic::ToDart(val.start_index),
+      tonic::ToDart(val.end_index),
+      tonic::ToDart(val.end_excluding_whitespace),
+      tonic::ToDart(val.end_including_newline),
+      tonic::ToDart(val.hard_break),
+      tonic::ToDart(val.ascent),
+      tonic::ToDart(val.descent),
+      tonic::ToDart(val.unscaled_ascent),
+      tonic::ToDart(val.height),  // passed separately due to rounding.
+      tonic::ToDart(val.width),
+      tonic::ToDart(val.left),
+      tonic::ToDart(val.baseline),
+      tonic::ToDart(val.line_number),
+      tonic::ToDart(metrics),
+      tonic::ToDart(indexes)};
   return Dart_New(GetLineMetricsType(), tonic::ToDart("_"), argc, argv);
 }
 

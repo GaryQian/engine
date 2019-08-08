@@ -1852,6 +1852,11 @@ class Paragraph extends NativeFieldWrapperClass2 {
   // this indirection.
   void _paint(Canvas canvas, double x, double y) native 'Paragraph_paint';
 
+  /// Returns the full list of [LineMetrics] that describe in detail the various
+  /// metrics of each laid out line.
+  ///
+  /// This can potentially return a large amount of data, so it is not recommended
+  /// to repeatedly call this. Instead, cache the results.
   List<LineMetrics> getLineMetrics() native 'Paragraph_getLineMetrics';
 }
 
