@@ -1595,11 +1595,26 @@ class LineMetrics {
     }
   }
 
-  // The indexes in the text buffer the line begins and ends.
+  /// The index in the text buffer the line begins.
   final int startIndex;
+
+  /// The index in the text buffer the line ends.
   final int endIndex;
+
+  /// The index in the text buffer the line ends ignoring whitespace.
+  ///
+  /// This value is provided as if any whitespace at the end were truncated.
   final int endExcludingWhitespace;
+
+  /// The index in the text buffer the line ends including newline characters.
+  ///
+  /// This value is provided as if any trailing newline characters for the
+  /// current line were included. Newline characters in other lines are always
+  /// accounted for.
   final int endIncludingNewline;
+
+  /// True if this line ends with a explicit line break (eg, '\n') or is the end
+  /// of the paragraph. False otherwise.
   final bool hardBreak;
 
   // The final computed ascent and descent for the line. This can be impacted by
@@ -1609,19 +1624,48 @@ class LineMetrics {
   // descent`. Ascent and descent are provided as positive numbers. Raw numbers
   // for specific runs of text can be obtained in run_metrics_map. These values
   // are the cumulative metrics for the entire line.
+
+  /// The rise from the baseline as calculated from the font and style for this line.
+  ///
+  /// Ascent is provided as a positive value, even though it is typically defined in
+  /// fonts as negative. This is to ensure the signage of operations with these
+  /// metrics directly reflects the intended signage of the value. For example,
+  /// the y-coordinate of the top edge of the line is 'baseline - ascent`.
   final double ascent;
+
+  /// The drop from the baseline as calculated from the font and style for this line.
+  ///
+  /// The y-coordinate of the bottom edge of the line is 'baseline + descent`.
   final double descent;
+
+  /// The rise from the baseline as calculated from the font and style for this line
+  /// ignoring the text scale factor.
+  ///
+  /// Ascent is provided as a positive value, even though it is typically defined in
+  /// fonts as negative. This is to ensure the signage of operations with these
+  /// metrics directly reflects the intended signage of the value. For example,
+  /// the y-coordinate of the top edge of the line is 'baseline - ascent`.
   final double unscaledAscent;
-  // Height of the line.
+
+  /// Total height of the line from the top edge to the bottom edge.
+  ///
+  /// This is equivalent to `ascent + descent`
   final double height;
-  // Width of the line.
+
+  /// Width of the line.
   final double width;
-  // The left edge of the line. The right edge can be obtained with `left +
-  // width`
+
+  /// The x-coordinate of left edge of the line.
+  ///
+  /// The right edge can be obtained with `left + width`.
   final double left;
-  // The y position of the baseline for this line from the top of the paragraph.
+
+  /// The y position of the baseline for this line from the top of the paragraph.
   final double baseline;
-  // Zero indexed line number.
+
+  /// Zero indexed line number.
+  ///
+  /// For example, the first line is line 0, second line is line 1.
   final int lineNumber;
 
   // Mapping between text index ranges and the FontMetrics associated with
@@ -1652,21 +1696,36 @@ class RunMetrics {
     this.strikeoutPosition,
   );
 
-  double top;                 // distance to reserve above baseline
-  double ascent;              // distance to reserve below baseline
-  double descent;             // extent below baseline
-  double bottom;              // extent below baseline
-  double leading;             // distance to add between lines
-  double avgCharWidth;        // average character width
-  double maxCharWidth;        // maximum character width
-  double xMin;                // minimum x
-  double xMax;                // maximum x
-  double xHeight;             // height of lower-case 'x'
-  double capHeight;           // height of an upper-case letter
-  double underlineThickness;  // underline thickness
-  double underlinePosition;   // underline position relative to baseline
-  double strikeoutThickness;  // strikeout thickness
-  double strikeoutPosition;   // strikeout position relative to baseline
+  /// Extent above baseline.
+  final double top;    
+  /// Distance to reserve above baseline.
+  final double ascent;
+  /// Distance to reserve below baseline.
+  final double descent;
+  /// Extent below baseline.
+  final double bottom;
+  /// Distance to add between lines.
+  final double leading;
+  /// Average character width.
+  final double avgCharWidth;
+  /// Maximum character width.
+  final double maxCharWidth;
+  /// Minimum x
+  final double xMin;
+  /// Maximum x
+  final double xMax;
+  /// Height of lower-case 'x'.
+  final double xHeight;
+  /// Height of an upper-case letter.
+  final double capHeight;
+  /// Underline thickness.
+  final double underlineThickness;
+  /// Underline position relative to baseline.
+  final double underlinePosition;
+  /// Strikeout thickness.
+  final double strikeoutThickness;
+  /// Strikeout position relative to baseline.
+  final double strikeoutPosition;
 }
 
 /// A paragraph of text.
