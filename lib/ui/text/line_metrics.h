@@ -6,6 +6,7 @@
 #define FLUTTER_LIB_UI_TEXT_LINE_METRICS_H_
 
 #include "flutter/lib/ui/text/run_metrics.h"
+#include "flutter/third_party/txt/src/txt/run_metrics.h"
 #include "third_party/dart/runtime/include/dart_api.h"
 #include "third_party/tonic/converter/dart_converter.h"
 
@@ -40,8 +41,10 @@ struct LineMetrics {
   // Zero indexed line number.
   size_t line_number = 0;
 
-  std::vector<RunMetrics> run_metrics;
-  std::vector<size_t> run_metrics_indexes;
+  std::map<size_t, txt::RunMetrics> run_metrics;
+
+  // std::vector<RunMetrics> run_metrics;
+  // std::vector<size_t> run_metrics_indexes;
 
   LineMetrics();
 
@@ -57,7 +60,10 @@ struct LineMetrics {
               double width,
               double left,
               double baseline,
-              size_t line_number)
+              size_t line_number,
+              std::map<size_t, txt::RunMetrics>& metrics)
+      //     std::vector<RunMetrics>& metrics,
+      // std::vector<size_t>& metrics_indexes)
       : start_index(start_index),
         end_index(end_index),
         end_excluding_whitespace(end_excluding_whitespace),
@@ -70,7 +76,10 @@ struct LineMetrics {
         width(width),
         left(left),
         baseline(baseline),
-        line_number(line_number) {}
+        line_number(line_number),
+        run_metrics(metrics) {}
+  // run_metrics(metrics),
+  // run_metrics_indexes(metrics_indexes) {}
 };
 
 }  // namespace flutter

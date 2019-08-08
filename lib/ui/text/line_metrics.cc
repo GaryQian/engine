@@ -28,6 +28,30 @@ Dart_Handle GetLineMetricsType() {
 Dart_Handle DartConverter<flutter::LineMetrics>::ToDart(
     const flutter::LineMetrics& val) {
   constexpr int argc = 15;
+  std::vector<size_t> indexes;
+  std::vector<RunMetrics> metrics;
+  for (auto it = val.run_metrics.begin(); it != val.run_metrics.end(); ++it) {
+    indexes.push_back(it->first);
+    metrics.emplace_back(
+        // clang-format off
+        it->second.font_metrics_.fTop,
+        it->second.font_metrics_.fAscent,
+        it->second.font_metrics_.fDescent,
+        it->second.font_metrics_.fBottom,
+        it->second.font_metrics_.fLeading,
+        it->second.font_metrics_.fAvgCharWidth,
+        it->second.font_metrics_.fMaxCharWidth,
+        it->second.font_metrics_.fXMin,
+        it->second.font_metrics_.fXMax,
+        it->second.font_metrics_.fXHeight,
+        it->second.font_metrics_.fCapHeight,
+        it->second.font_metrics_.fUnderlineThickness,
+        it->second.font_metrics_.fUnderlinePosition,
+        it->second.font_metrics_.fStrikeoutThickness,
+        it->second.font_metrics_.fStrikeoutPosition);
+    // clang-format on
+  }
+
   Dart_Handle argv[argc] = {tonic::ToDart(val.start_index),
                             tonic::ToDart(val.end_index),
                             tonic::ToDart(val.end_excluding_whitespace),
@@ -41,8 +65,8 @@ Dart_Handle DartConverter<flutter::LineMetrics>::ToDart(
                             tonic::ToDart(val.left),
                             tonic::ToDart(val.baseline),
                             tonic::ToDart(val.line_number),
-                            tonic::ToDart(val.run_metrics),
-                            tonic::ToDart(val.run_metrics_indexes)};
+                            tonic::ToDart(metrics),
+                            tonic::ToDart(indexes)};
   return Dart_New(GetLineMetricsType(), tonic::ToDart("_"), argc, argv);
 }
 

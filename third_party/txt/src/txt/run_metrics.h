@@ -27,16 +27,17 @@ class RunMetrics {
  public:
   RunMetrics(const TextStyle* style) : text_style_(style) {}
 
-  RunMetrics(const TextStyle* style, SkFontMetrics& metrics)
+  RunMetrics(const TextStyle* style, const SkFontMetrics& metrics)
       : text_style_(style), font_metrics_(metrics) {}
 
   SkFontMetrics& GetFontMetrics() { return font_metrics_; }
 
   const TextStyle& GetTextStyle() const { return *text_style_; }
 
- private:
   const TextStyle* text_style_;
+  SkFontMetrics font_metrics_;
 
+ private:
   // SkFontMetrics contains the following metrics:
   //
   // * Top                 distance to reserve above baseline
@@ -54,7 +55,6 @@ class RunMetrics {
   // * UnderlinePosition   underline position relative to baseline
   // * StrikeoutThickness  strikeout thickness
   // * StrikeoutPosition   strikeout position relative to baseline
-  SkFontMetrics font_metrics_;
 };
 
 }  // namespace txt

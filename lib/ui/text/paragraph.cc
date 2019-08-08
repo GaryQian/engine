@@ -33,7 +33,8 @@ IMPLEMENT_WRAPPERTYPEINFO(ui, Paragraph);
   V(Paragraph, getWordBoundary)         \
   V(Paragraph, getRectsForRange)        \
   V(Paragraph, getRectsForPlaceholders) \
-  V(Paragraph, getPositionForOffset)
+  V(Paragraph, getPositionForOffset)    \
+  V(Paragraph, getLineMetrics)
 
 DART_BIND_ALL(Paragraph, FOR_EACH_BINDING)
 
