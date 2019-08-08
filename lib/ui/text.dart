@@ -1668,9 +1668,17 @@ class LineMetrics {
   /// For example, the first line is line 0, second line is line 1.
   final int lineNumber;
 
-  // Mapping between text index ranges and the FontMetrics associated with
-  // them. The first run will be keyed under start_index. The metrics here
-  // are before layout and are the base values we calculate from.
+  /// Mapping between text index ranges and the RunMetrics associated with
+  /// them.
+  ///
+  /// Each entry will be keyed under the ending index the run applies to. Each
+  /// [RunMetrics] entry corresponds to the text covered by the range of
+  /// `[previous key, current key)`. For a given index `i`, the [RunMetrics]
+  /// that applies to it is the largest key such that `i < key`. For the first
+  /// key, the [startIndex] acts as the previous key.
+  ///
+  /// The metrics here are pre-layout values and are the base font metrics we
+  /// compute the rest of the paragraph from.
   final Map<int, RunMetrics> runMetrics;
 }
 
@@ -1710,9 +1718,9 @@ class RunMetrics {
   final double avgCharWidth;
   /// Maximum character width.
   final double maxCharWidth;
-  /// Minimum x
+  /// Minimum x.
   final double xMin;
-  /// Maximum x
+  /// Maximum x.
   final double xMax;
   /// Height of lower-case 'x'.
   final double xHeight;
