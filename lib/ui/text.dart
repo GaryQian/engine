@@ -1710,12 +1710,14 @@ class RunMetrics {
   /// Extent above baseline.
   final double top;    
   /// Distance to reserve above baseline.
+  ///
+  /// Since this is the raw metric from the font, [ascent] is usually negative.
   final double ascent;
   /// Distance to reserve below baseline.
   final double descent;
   /// Extent below baseline.
   final double bottom;
-  /// Distance to add between lines.
+  /// Additional distance to add between lines.
   final double leading;
   /// Average character width.
   final double avgCharWidth;
@@ -1730,12 +1732,20 @@ class RunMetrics {
   /// Height of an upper-case letter.
   final double capHeight;
   /// Underline thickness.
+  ///
+  /// Can be null.
   final double underlineThickness;
   /// Underline position relative to baseline.
+  ///
+  /// Can be null.
   final double underlinePosition;
   /// Strikeout thickness.
+  ///
+  /// Can be null.
   final double strikeoutThickness;
   /// Strikeout position relative to baseline.
+  ///
+  /// Can be null.
   final double strikeoutPosition;
 }
 
