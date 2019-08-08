@@ -998,10 +998,10 @@ void ParagraphTxt::Layout(double width) {
         // correct RunMetrics at any text index.
         size_t run_key = run.end() - 1;
         line_metrics.run_metrics.emplace(run_key, &run.style());
-        font.getMetrics(&line_metrics.run_metrics.at(run_key).GetFontMetrics());
+        font.getMetrics(&line_metrics.run_metrics.at(run_key).font_metrics);
 
         SkFontMetrics* metrics;
-        metrics = &line_metrics.run_metrics.at(run_key).GetFontMetrics();
+        metrics = &line_metrics.run_metrics.at(run_key).font_metrics;
         Range<double> record_x_pos(
             glyph_positions.front().x_pos.start - run_x_offset,
             glyph_positions.back().x_pos.end - run_x_offset);

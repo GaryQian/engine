@@ -34,21 +34,21 @@ Dart_Handle DartConverter<flutter::LineMetrics>::ToDart(
     indexes.push_back(it->first);
     metrics.emplace_back(
         // clang-format off
-        it->second.font_metrics_.fTop,
-        it->second.font_metrics_.fAscent,
-        it->second.font_metrics_.fDescent,
-        it->second.font_metrics_.fBottom,
-        it->second.font_metrics_.fLeading,
-        it->second.font_metrics_.fAvgCharWidth,
-        it->second.font_metrics_.fMaxCharWidth,
-        it->second.font_metrics_.fXMin,
-        it->second.font_metrics_.fXMax,
-        it->second.font_metrics_.fXHeight,
-        it->second.font_metrics_.fCapHeight,
-        it->second.font_metrics_.fUnderlineThickness,
-        it->second.font_metrics_.fUnderlinePosition,
-        it->second.font_metrics_.fStrikeoutThickness,
-        it->second.font_metrics_.fStrikeoutPosition);
+        it->second.font_metrics.fTop,
+        it->second.font_metrics.fAscent,
+        it->second.font_metrics.fDescent,
+        it->second.font_metrics.fBottom,
+        it->second.font_metrics.fLeading,
+        it->second.font_metrics.fAvgCharWidth,
+        it->second.font_metrics.fMaxCharWidth,
+        it->second.font_metrics.fXMin,
+        it->second.font_metrics.fXMax,
+        it->second.font_metrics.fXHeight,
+        it->second.font_metrics.fCapHeight,
+        it->second.font_metrics.fUnderlineThickness,
+        it->second.font_metrics.fUnderlinePosition,
+        it->second.font_metrics.fStrikeoutThickness,
+        it->second.font_metrics.fStrikeoutPosition);
     // clang-format on
   }
 
