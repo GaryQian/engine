@@ -1683,7 +1683,6 @@ class LineMetrics {
   final Map<int, RunMetrics> runMetrics;
 }
 
-
 /// Data class that tracks the raw font metrics for a particular text buffer index.
 class RunMetrics {
   @pragma('vm:entry-point')
@@ -1708,7 +1707,7 @@ class RunMetrics {
   // TODO(garyq): Include the TextStyle here too.
 
   /// Extent above baseline.
-  final double top;    
+  final double top;
   /// Distance to reserve above baseline.
   ///
   /// Since this is the raw metric from the font, [ascent] is usually negative.

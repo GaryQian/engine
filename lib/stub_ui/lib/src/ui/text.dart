@@ -1011,6 +1011,185 @@ enum BoxWidthStyle {
   max,
 }
 
+/// Data class that holds the metrics for a single line in the [Paragraph].
+class LineMetrics {
+
+  @pragma('vm:entry-point')
+  LineMetrics._(
+    this.startIndex,
+    this.endIndex,
+    this.endExcludingWhitespace,
+    this.endIncludingNewline,
+    this.hardBreak,
+    this.ascent,
+    this.descent,
+    this.unscaledAscent,
+    this.height,
+    this.width,
+    this.left,
+    this.baseline,
+    this.lineNumber,
+    List<RunMetrics> rMetrics,
+    List<int> rMetricsIndexes,
+  ) : runMetrics = Map() {
+    for (int i = 0; i < rMetrics.length; ++i) {
+      runMetrics[rMetricsIndexes[i]] = rMetrics[i];
+    }
+  }
+
+  /// The index in the text buffer the line begins.
+  final int startIndex;
+
+  /// The index in the text buffer the line ends.
+  final int endIndex;
+
+  /// The index in the text buffer the line ends ignoring whitespace.
+  ///
+  /// This value is provided as if any whitespace at the end were truncated.
+  final int endExcludingWhitespace;
+
+  /// The index in the text buffer the line ends including newline characters.
+  ///
+  /// This value is provided as if any trailing newline characters for the
+  /// current line were included. Newline characters in other lines are always
+  /// accounted for.
+  final int endIncludingNewline;
+
+  /// True if this line ends with a explicit line break (eg, '\n') or is the end
+  /// of the paragraph. False otherwise.
+  final bool hardBreak;
+
+  // The final computed ascent and descent for the line. This can be impacted by
+  // the strut, height, scaling, as well as outlying runs that are very tall.
+  //
+  // The top edge is `baseline - ascent` and the bottom edge is `baseline +
+  // descent`. Ascent and descent are provided as positive numbers. Raw numbers
+  // for specific runs of text can be obtained in run_metrics_map. These values
+  // are the cumulative metrics for the entire line.
+
+  /// The rise from the [baseline] as calculated from the font and style for this line.
+  ///
+  /// The [ascent] is provided as a positive value, even though it is typically defined in
+  /// fonts as negative. This is to ensure the signage of operations with these
+  /// metrics directly reflects the intended signage of the value. For example,
+  /// the y-coordinate of the top edge of the line is 'baseline - ascent`.
+  final double ascent;
+
+  /// The drop from the [baseline] as calculated from the font and style for this line.
+  ///
+  /// The y-coordinate of the bottom edge of the line is 'baseline + descent`.
+  final double descent;
+
+  /// The rise from the [baseline] as calculated from the font and style for this line
+  /// ignoring the text scale factor.
+  ///
+  /// The [unscaledAscent] is provided as a positive value, even though it is typically
+  /// defined in fonts as negative. This is to ensure the signage of operations with
+  /// these metrics directly reflects the intended signage of the value. For example,
+  /// the y-coordinate of the top edge of the line is 'baseline - ascent`.
+  final double unscaledAscent;
+
+  /// Total height of the line from the top edge to the bottom edge.
+  ///
+  /// This is equivalent to `ascent + descent`
+  final double height;
+
+  /// Width of the line.
+  final double width;
+
+  /// The x-coordinate of left edge of the line.
+  ///
+  /// The right edge can be obtained with `left + width`.
+  final double left;
+
+  /// The y position of the baseline for this line from the top of the paragraph.
+  final double baseline;
+
+  /// Zero indexed line number.
+  ///
+  /// For example, the first line is line 0, second line is line 1.
+  final int lineNumber;
+
+  /// Mapping between text index ranges and the RunMetrics associated with
+  /// them.
+  ///
+  /// Each entry will be keyed under the ending index the run applies to. Each
+  /// [RunMetrics] entry corresponds to the text covered by the range of
+  /// `[previous key, current key)`. For a given index `i`, the [RunMetrics]
+  /// that applies to it is the largest key such that `i < key`. For the first
+  /// key, the [startIndex] acts as the previous key.
+  ///
+  /// The metrics here are pre-layout values and are the base font metrics we
+  /// compute the rest of the paragraph from. These metrics do not account for
+  /// modifiers such as [StrutStyle] or `textScaleFactor`.
+  final Map<int, RunMetrics> runMetrics;
+}
+
+/// Data class that tracks the raw font metrics for a particular text buffer index.
+class RunMetrics {
+  @pragma('vm:entry-point')
+  RunMetrics._(
+    this.top,
+    this.ascent,
+    this.descent,
+    this.bottom,
+    this.leading,
+    this.avgCharWidth,
+    this.maxCharWidth,
+    this.xMin,
+    this.xMax,
+    this.xHeight,
+    this.capHeight,
+    this.underlineThickness,
+    this.underlinePosition,
+    this.strikeoutThickness,
+    this.strikeoutPosition,
+  );
+
+  // TODO(garyq): Include the TextStyle here too.
+
+  /// Extent above baseline.
+  final double top;
+  /// Distance to reserve above baseline.
+  ///
+  /// Since this is the raw metric from the font, [ascent] is usually negative.
+  final double ascent;
+  /// Distance to reserve below baseline.
+  final double descent;
+  /// Extent below baseline.
+  final double bottom;
+  /// Additional distance to add between lines.
+  final double leading;
+  /// Average character width.
+  final double avgCharWidth;
+  /// Maximum character width.
+  final double maxCharWidth;
+  /// Minimum x.
+  final double xMin;
+  /// Maximum x.
+  final double xMax;
+  /// Height of lower-case 'x'.
+  final double xHeight;
+  /// Height of an upper-case letter.
+  final double capHeight;
+  /// Underline thickness.
+  ///
+  /// Can be null.
+  final double underlineThickness;
+  /// Underline position relative to baseline.
+  ///
+  /// Can be null.
+  final double underlinePosition;
+  /// Strikeout thickness.
+  ///
+  /// Can be null.
+  final double strikeoutThickness;
+  /// Strikeout position relative to baseline.
+  ///
+  /// Can be null.
+  final double strikeoutPosition;
+}
+
 /// A paragraph of text.
 ///
 /// A paragraph retains the size and position of each glyph in the text and can
@@ -1117,6 +1296,13 @@ abstract class Paragraph {
   /// Coordinates of the [TextBox] are relative to the upper-left corner of the paragraph,
   /// where positive y values indicate down.
   List<TextBox> getBoxesForPlaceholders();
+
+  /// Returns the full list of [LineMetrics] that describe in detail the various
+  /// metrics of each laid out line.
+  ///
+  /// This can potentially return a large amount of data, so it is not recommended
+  /// to repeatedly call this. Instead, cache the results.
+  List<LineMetrics> getLineMetrics();
 }
 
 /// Builds a [Paragraph] containing text with the given styling information.
