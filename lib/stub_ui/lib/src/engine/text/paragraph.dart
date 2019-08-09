@@ -283,6 +283,11 @@ class EngineParagraph implements ui.Paragraph {
     final int end = WordBreaker.nextBreakIndex(_plainText, offset);
     return <int>[start, end];
   }
+
+  @override
+  List<ui.LineMetrics> getLineMetrics() {
+    return const <ui.LineMetrics>[];
+  }
 }
 
 /// The web implementation of [ui.ParagraphStyle].
