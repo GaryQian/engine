@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google, Inc.
+ * Copyright 2017 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,26 +14,17 @@
  * limitations under the License.
  */
 
-#include <string>
+#ifndef MAC_UTILS_H
+#define MAC_UTILS_H
 
-#include "flutter/fml/command_line.h"
-#include "txt/font_collection.h"
-#include "txt/paragraph_builder_txt.h"
-#include "txt/paragraph_txt.h"
-#include "utils/MacUtils.h"
-
-namespace txt {
-
-const std::string& GetFontDir();
-
-void SetFontDir(const std::string& dir);
-
-const fml::CommandLine& GetCommandLineForProcess();
-
-void SetCommandLine(fml::CommandLine cmd);
-
-std::shared_ptr<FontCollection> GetTestFontCollection();
-
-std::unique_ptr<ParagraphTxt> BuildParagraph(ParagraphBuilderTxt& builder);
-
-}  // namespace txt
+#if defined(GTEST_OS_MAC)
+#define MAC_ONLY(TEST_NAME) TEST_NAME
+#define FRIEND_TEST_MAC_ONLY(SUITE, TEST_NAME) FRIEND_TEST(SUITE, TEST_NAME)
+#else
+#define MAC_ONLY(TEST_NAME) DISABLED_##TEST_NAME
+#define FRIEND_TEST_MAC_ONLY_EXPANDED(SUITE, TEST_NAME) \
+  FRIEND_TEST(SUITE, TEST_NAME)
+#define FRIEND_TEST_MAC_ONLY(SUITE, TEST_NAME) \
+  FRIEND_TEST_MAC_ONLY_EXPANDED(SUITE, MAC_ONLY(TEST_NAME))
+#endif  // defined(_WIN32)
+#endif  // MAC_UTILS_H

@@ -71,6 +71,42 @@ TEST_F(ParagraphTest, SimpleParagraph) {
   ASSERT_TRUE(Snapshot());
 }
 
+TEST_F(ParagraphTest, MAC_ONLY(FontFallbackOrderParagraph)) {
+  const char* text = "置";
+  auto icu_text = icu::UnicodeString::fromUTF8(text);
+  std::u16string u16_text(icu_text.getBuffer(),
+                          icu_text.getBuffer() + icu_text.length());
+
+  const char* text2 = "한";
+  auto icu_text2 = icu::UnicodeString::fromUTF8(text2);
+  std::u16string u16_text2(icu_text2.getBuffer(),
+                           icu_text2.getBuffer() + icu_text2.length());
+
+  txt::ParagraphStyle paragraph_style;
+  auto collection = GetTestFontCollection();
+  txt::ParagraphBuilderTxt builder(paragraph_style, collection);
+
+  txt::TextStyle text_style;
+  text_style.font_families = std::vector<std::string>(1, "Roboto");
+  builder.PushStyle(text_style);
+  builder.AddText(u16_text);
+
+  auto paragraph = BuildParagraph(builder);
+  paragraph->Layout(GetTestCanvasWidth());
+
+  paragraph->Paint(GetCanvas(), 10.0, 15.0);
+  ASSERT_TRUE(Snapshot());
+
+  // Add Korean
+  builder.AddText(u16_text2);
+
+  paragraph = BuildParagraph(builder);
+  paragraph->Layout(GetTestCanvasWidth());
+  ASSERT_TRUE(Snapshot());
+
+  builder.Pop();
+}
+
 // It is possible for the line_metrics_ vector in paragraph to have an empty
 // line at the end as a result of the line breaking algorithm. This causes
 // the final_line_count_ to be one less than line metrics. This tests that we

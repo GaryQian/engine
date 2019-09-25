@@ -29,6 +29,7 @@
 #include "third_party/skia/include/core/SkRefCnt.h"
 #include "txt/asset_font_manager.h"
 #include "txt/text_style.h"
+#include "utils/MacUtils.h"
 
 #if FLUTTER_ENABLE_SKSHAPER
 #include "third_party/skia/modules/skparagraph/include/FontCollection.h"
@@ -75,6 +76,8 @@ class FontCollection : public std::enable_shared_from_this<FontCollection> {
 #endif  // FLUTTER_ENABLE_SKSHAPER
 
  private:
+  FRIEND_TEST_MAC_ONLY(FontCollectionTest, FallbackCacheOrder);
+
   struct FamilyKey {
     FamilyKey(const std::vector<std::string>& families, const std::string& loc);
 
