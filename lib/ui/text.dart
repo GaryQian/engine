@@ -330,6 +330,10 @@ enum TextAlign {
   /// Lines that end with hard line breaks are aligned towards the [start] edge.
   justify,
 
+  justifyLeft,
+
+  justifyRight,
+
   /// Align the text on the leading edge of the container.
   ///
   /// For left-to-right text ([TextDirection.ltr]), this is the left edge.

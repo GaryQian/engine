@@ -32,6 +32,8 @@ enum class TextAlign {
   right,
   center,
   justify,
+  justifyLeft,
+  justifyRight,
   start,
   end,
 };

@@ -711,7 +711,9 @@ void ParagraphTxt::Layout(double width) {
     double word_gap_width = 0;
     size_t word_index = 0;
     bool justify_line =
-        (paragraph_style_.text_align == TextAlign::justify &&
+        ((paragraph_style_.text_align == TextAlign::justify ||
+          paragraph_style_.text_align == TextAlign::justifyLeft ||
+          paragraph_style_.text_align == TextAlign::justifyRight) &&
          line_number != line_limit - 1 && !line_metrics.hard_break);
     FindWords(text_, line_metrics.start_index, line_metrics.end_index, &words);
     if (justify_line) {
@@ -726,7 +728,9 @@ void ParagraphTxt::Layout(double width) {
     size_t line_end_index =
         (paragraph_style_.effective_align() == TextAlign::right ||
          paragraph_style_.effective_align() == TextAlign::center ||
-         paragraph_style_.effective_align() == TextAlign::justify)
+         paragraph_style_.effective_align() == TextAlign::justify ||
+         paragraph_style_.effective_align() == TextAlign::justifyLeft ||
+         paragraph_style_.effective_align() == TextAlign::justifyRight)
             ? line_metrics.end_excluding_whitespace
             : line_metrics.end_index;
 
@@ -1263,7 +1267,8 @@ double ParagraphTxt::GetLineXOffset(double line_total_advance,
   if (align == TextAlign::right ||
       (align == TextAlign::justify &&
        paragraph_style_.text_direction == TextDirection::rtl &&
-       !justify_line)) {
+       !justify_line) ||
+      (align == TextAlign::justifyRight && !justify_line)) {
     return width_ - line_total_advance;
   } else if (align == TextAlign::center) {
     return (width_ - line_total_advance) / 2;
